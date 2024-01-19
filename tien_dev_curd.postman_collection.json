@@ -1,0 +1,253 @@
+{
+	"info": {
+		"_postman_id": "93c67537-24fd-4a86-b7ef-7e24674c668c",
+		"name": "tien_dev_curd",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "adidas",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.1.103:3000/adidas",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"103"
+							],
+							"port": "3000",
+							"path": [
+								"adidas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ultra boost 1\",\n    \"price\": \"110$\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.1.103:3000/adidas/10",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"103"
+							],
+							"port": "3000",
+							"path": [
+								"adidas",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\": \"ultra boost\",\n\"price\": \"110$\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.1.103:3000/adidas",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"103"
+							],
+							"port": "3000",
+							"path": [
+								"adidas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\": \"ultra boost\",\n\"price\": \"110$\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.1.103:3000/adidas/6",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"103"
+							],
+							"port": "3000",
+							"path": [
+								"adidas",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "courses",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.1.103:3000/courses",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"103"
+							],
+							"port": "3000",
+							"path": [
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ultra boost 1\",\n    \"price\": \"110$\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.1.103:3000/adidas/10",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"103"
+							],
+							"port": "3000",
+							"path": [
+								"adidas",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\": \"ultra boost\",\n\"price\": \"110$\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.1.103:3000/adidas",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"103"
+							],
+							"port": "3000",
+							"path": [
+								"adidas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\": \"ultra boost\",\n\"price\": \"110$\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.1.103:3000/adidas/6",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"103"
+							],
+							"port": "3000",
+							"path": [
+								"adidas",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
