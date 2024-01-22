@@ -1,8 +1,10 @@
 <?php
+
 header('Content-Type: application/json');
 
 // Đọc dữ liệu từ tệp JSON
-$data = json_decode(file_get_contents('shoes.json'), true);
+$jsonData = file_get_contents('shoes.json');
+$data = json_decode($jsonData, true);
 
 // Kiểm tra phương thức HTTP
 $method = $_SERVER['REQUEST_METHOD'];
@@ -14,15 +16,23 @@ switch ($method) {
         break;
 
     case 'POST':
-        // Xử lý yêu cầu POST (ví dụ: thêm mới dữ liệu)
-        $postData = json_decode(file_get_contents('api.php'), true);
+        // Xử lý yêu cầu POST, ví dụ: thêm mới dữ liệu
+        // Đọc dữ liệu từ yêu cầu
+        $postData = json_decode(file_get_contents('php://input'), true);
+
+        // Đọc giá trị id hiện tại từ tệp hoặc biến (id_counter.txt là một tệp lưu trữ giá trị id)
+        $idCounter = file_get_contents('id_counter.txt');
+
+        // Tăng giá trị id và lưu lại vào tệp hoặc biến
+        $newItemId = $idCounter + 1;
+        file_put_contents('id_counter.txt', $newItemId);
 
         // Thêm dữ liệu mới
-        $newItem = [
-            'id' => count($data) + 1,
+        $newItem = array(
+            'id' => $newItemId,
             'name' => $postData['name'],
-            'email' => $postData['email']
-        ];
+            'price' => $postData['price']
+        );
 
         $data[] = $newItem;
 
@@ -32,36 +42,35 @@ switch ($method) {
         // Trả về dữ liệu mới đã thêm
         echo json_encode($newItem);
         break;
-
-    case 'DELETE':
-        // Xử lý yêu cầu DELETE (ví dụ: xóa một mục)
-        parse_str(file_get_contents('api.php'), $deleteParams);
-        $itemIdToDelete = $deleteParams['id'] ?? null;
-
-        if ($itemIdToDelete !== null) {
-            // Tìm và xóa mục có ID tương ứng
-            foreach ($data as $key => $item) {
-                if ($item['id'] == $itemIdToDelete) {
-                    unset($data[$key]);
-                    // Lưu lại dữ liệu mới vào tệp JSON
-                    file_put_contents('shoes.json', json_encode(array_values($data)));
-                    echo json_encode(['message' => 'Item deleted successfully']);
-                    exit;
+        case 'DELETE':
+            // Xử lý yêu cầu DELETE, ví dụ: xóa dữ liệu
+            $deleteId = $_GET['id'];
+        
+            // Kiểm tra xem id cần xóa có tồn tại trong dữ liệu không
+            $idExists = in_array($deleteId, array_column($data, 'id'));
+        
+            if ($idExists) {
+                // Thực hiện xóa dữ liệu
+                foreach ($data as $key => $item) {
+                    if ($item['id'] == $deleteId) {
+                        unset($data[$key]);
+                        break;
+                    }
                 }
+        
+                // Giảm giá trị id
+                $maxId = max(array_column($data, 'id'));
+                file_put_contents('id_counter.txt', $maxId);
+        
+                // Lưu lại dữ liệu đã được cập nhật vào tệp JSON
+                file_put_contents('shoes.json', json_encode(array_values($data)));
+        
+                echo json_encode(array('message' => 'Item deleted successfully'));
+            } else {
+                // Trường hợp id không tồn tại, trả về lỗi
+                http_response_code(404);
+                echo json_encode(array('message' => 'Not Found - ID does not exist'));
             }
-        }
-
-        // Trả về lỗi nếu không tìm thấy hoặc không có ID được cung cấp
-        http_response_code(404);
-        echo json_encode(['message' => 'Item not found or no ID provided']);
-        break;
-
-    // Các trường hợp xử lý PUT và các phương thức khác có thể được thêm vào tùy thuộc vào yêu cầu của bạn
-
-    default:
-        // Trường hợp mặc định, trả về lỗi không hỗ trợ phương thức
-        http_response_code(405);
-        echo json_encode(['message' => 'Method Not Allowed']);
-        break;
+            break;
+        
 }
-?>
