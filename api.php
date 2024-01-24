@@ -66,34 +66,34 @@ switch ($method) {
             echo json_encode(array('message' => 'Not Found - ID does not exist'));
         }
         break;
-        case `PUT `:
-            // Read the raw input data from the request
-    $putData = file_get_contents('php://input');
-
-    // Decode the JSON data
-    $jsonData = json_decode($putData, true);
-
-    // Validate JSON data
-    if ($jsonData !== null) {
-        // Read existing data from the file
-        $existingData = json_decode(file_get_contents($dataFile), true);
-
-        // Merge or update the data
-        foreach ($jsonData as $key => $value) {
-            $existingData[$key] = $value;
-        }
-
-        // Save the updated data back to the file
-        file_put_contents($dataFile, json_encode($existingData));
-
-        // Return the updated data as a response
-        echo json_encode($existingData);
-    } else {
-        // Return an error response for invalid JSON
-        http_response_code(400);
-        echo json_encode(['error' => 'Invalid JSON data']);
-    }
-
-    exit; // Stop further execution
-        break;
+        case 'PUT':
+            // Xử lý yêu cầu PUT, ví dụ: cập nhật dữ liệu
+            // Đọc dữ liệu từ yêu cầu
+            $putData = json_decode(file_get_contents('php://input'), true);
+            $updateId = $putData['id'];
+        
+            // Kiểm tra tính duy nhất của id
+            $idExists = in_array($updateId, array_column($data, 'id'));
+        
+            if ($idExists) {
+                // Thực hiện cập nhật dữ liệu
+                foreach ($data as &$item) {
+                    if ($item['id'] == $updateId) {
+                        $item['name'] = $putData['name'];
+                        $item['price'] = $putData['price'];
+                        break;
+                    }
+                }
+        
+                // Lưu lại dữ liệu đã được cập nhật vào tệp JSON
+                file_put_contents('shoes.json', json_encode($data));
+        
+                echo json_encode(array('message' => 'Item updated successfully'));
+            } else {
+                // Trường hợp id không tồn tại, trả về lỗi
+                http_response_code(404);
+                echo json_encode(array('message' => 'Not Found - ID does not exist'));
+            }
+            break;
+            
 }
