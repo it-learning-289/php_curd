@@ -29,47 +29,47 @@ switch ($method) {
 
             // Trả về kết quả tìm kiếm
             echo json_encode($searchResults);
+        } 
+        else {
+
+            //FILTER   http://localhost:8000/api.php?action=filter&field=price&value=25&comparison=more
+            // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và lọc theo trường cụ thể
+            $filterField = isset($_GET['action']) && $_GET['action'] === 'filter' ? $_GET['field'] : '';
+            $filterValue = isset($_GET['value']) ? $_GET['value'] : '';
+            $comparison = isset($_GET['comparison']) ? $_GET['comparison'] : 'more'; // Mặc định là lớn hơn
+
+            if (!empty($filterField) && is_numeric($filterValue)) {
+                // Nếu có trường lọc và giá trị lọc là một số, thực hiện lọc dữ liệu
+                $filteredResults = array_filter($data, function ($item) use ($filterField, $filterValue, $comparison) {
+                    // Kiểm tra xem giá trị của trường có phải là số hay không
+                    if ($filterField === 'price') {
+                        // Nếu là trường 'price', trích xuất giá trị số từ chuỗi
+                        $priceValue = floatval(preg_replace('/[^0-9.]/', '', $item[$filterField]));
+                    } else {
+                        $priceValue = $item[$filterField];
+                    }
+
+                    // Thực hiện so sánh dựa trên loại so sánh
+                    switch ($comparison) {
+                        case 'more':
+                            return is_numeric($priceValue) && $priceValue > $filterValue;
+                        case 'less':
+                            return is_numeric($priceValue) && $priceValue < $filterValue;
+                        default:
+                            return false; // Trả về false nếu loại so sánh không hợp lệ
+                    }
+                });
+
+                // Chuyển kết quả lọc thành mảng
+                $filteredResults = array_values($filteredResults);
+
+                // Trả về kết quả lọc
+                echo json_encode($filteredResults);
+            } else {
+                // Nếu không có trường lọc hoặc giá trị lọc không phải là số, trả về toàn bộ dữ liệu
+                echo json_encode($data);
+            }
         }
-
-        
-        //FILTER   http://localhost:8000/api.php?action=filter&field=price&value=25&comparison=more
-        // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và lọc theo trường cụ thể
-        $filterField = isset($_GET['action']) && $_GET['action'] === 'filter' ? $_GET['field'] : '';
-        $filterValue = isset($_GET['value']) ? $_GET['value'] : '';
-        $comparison = isset($_GET['comparison']) ? $_GET['comparison'] : 'more'; // Mặc định là lớn hơn
-
-        if (!empty($filterField) && is_numeric($filterValue)) {
-            // Nếu có trường lọc và giá trị lọc là một số, thực hiện lọc dữ liệu
-            $filteredResults = array_filter($data, function ($item) use ($filterField, $filterValue, $comparison) {
-                // Kiểm tra xem giá trị của trường có phải là số hay không
-                if ($filterField === 'price') {
-                    // Nếu là trường 'price', trích xuất giá trị số từ chuỗi
-                    $priceValue = floatval(preg_replace('/[^0-9.]/', '', $item[$filterField]));
-                } else {
-                    $priceValue = $item[$filterField];
-                }
-
-                // Thực hiện so sánh dựa trên loại so sánh
-                switch ($comparison) {
-                    case 'more':
-                        return is_numeric($priceValue) && $priceValue > $filterValue;
-                    case 'less':
-                        return is_numeric($priceValue) && $priceValue < $filterValue;
-                    default:
-                        return false; // Trả về false nếu loại so sánh không hợp lệ
-                }
-            });
-
-            // Chuyển kết quả lọc thành mảng
-            $filteredResults = array_values($filteredResults);
-
-            // Trả về kết quả lọc
-            echo json_encode($filteredResults);
-        } else {
-            // Nếu không có trường lọc hoặc giá trị lọc không phải là số, trả về toàn bộ dữ liệu
-            echo json_encode($data);
-        }
-
         break;
 
     case 'POST':
