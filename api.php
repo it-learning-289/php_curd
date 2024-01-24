@@ -11,7 +11,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 switch ($method) {
     case 'GET':
         // Trả về toàn bộ dữ liệu
-        echo json_encode($data);
+        // echo json_encode($data);
 
         //SEARCH ....action=search&&name=""
         // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và tìm kiếm theo trường cụ thể
