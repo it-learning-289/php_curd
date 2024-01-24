@@ -66,34 +66,71 @@ switch ($method) {
             echo json_encode(array('message' => 'Not Found - ID does not exist'));
         }
         break;
-        case 'PUT':
-            // Xử lý yêu cầu PUT, ví dụ: cập nhật dữ liệu
-            // Đọc dữ liệu từ yêu cầu
-            $putData = json_decode(file_get_contents('php://input'), true);
-            $updateId = $putData['id'];
-        
-            // Kiểm tra tính duy nhất của id
-            $idExists = in_array($updateId, array_column($data, 'id'));
-        
-            if ($idExists) {
-                // Thực hiện cập nhật dữ liệu
-                foreach ($data as &$item) {
-                    if ($item['id'] == $updateId) {
-                        $item['name'] = $putData['name'];
-                        $item['price'] = $putData['price'];
-                        break;
-                    }
+    case 'PUT':
+        // Xử lý yêu cầu PUT, ví dụ: cập nhật dữ liệu
+        // Đọc dữ liệu từ yêu cầu
+        $putData = json_decode(file_get_contents('php://input'), true);
+        $updateId = $putData['id'];
+
+        // Kiểm tra tính duy nhất của id
+        $idExists = in_array($updateId, array_column($data, 'id'));
+
+        if ($idExists) {
+            // Thực hiện cập nhật dữ liệu
+            foreach ($data as &$item) {
+                if ($item['id'] == $updateId) {
+                    $item['name'] = $putData['name'];
+                    $item['price'] = $putData['price'];
+                    break;
                 }
-        
-                // Lưu lại dữ liệu đã được cập nhật vào tệp JSON
-                file_put_contents('shoes.json', json_encode($data));
-        
-                echo json_encode(array('message' => 'Item updated successfully'));
-            } else {
-                // Trường hợp id không tồn tại, trả về lỗi
-                http_response_code(404);
-                echo json_encode(array('message' => 'Not Found - ID does not exist'));
             }
-            break;
-            
+
+            // Lưu lại dữ liệu đã được cập nhật vào tệp JSON
+            file_put_contents('shoes.json', json_encode($data));
+
+            echo json_encode(array('message' => 'Item updated successfully'));
+        } else {
+            // Trường hợp id không tồn tại, trả về lỗi
+            http_response_code(404);
+            echo json_encode(array('message' => 'Not Found - ID does not exist'));
+        }
+        break;
+    case 'PATCH':
+        // Xử lý yêu cầu PATCH, ví dụ: cập nhật một số trường dữ liệu
+        // Đọc dữ liệu từ yêu cầu
+        $patchData = json_decode(file_get_contents('php://input'), true);
+        $patchId = $patchData['id'];
+
+        // Kiểm tra tính duy nhất của id
+        $idExists = in_array($patchId, array_column($data, 'id'));
+
+        if ($idExists) {
+            // Thực hiện cập nhật dữ liệu (ví dụ: cập nhật một số trường)
+            foreach ($data as &$item) {
+                if ($item['id'] == $patchId) {
+                    // Cập nhật một số trường dữ liệu, ví dụ: 'name'
+                    if (isset($patchData['name'])) {
+                        $item['name'] = $patchData['name'];
+                    }
+                    if (isset($patchData['price'])) {
+                        $item['price'] = $patchData['price'];
+                    }
+
+                    // Cập nhật một số trường dữ liệu khác nếu cần
+                    // ...
+
+                    break;
+                }
+            }
+
+            // Lưu lại dữ liệu đã được cập nhật vào tệp JSON
+            file_put_contents('shoes.json', json_encode($data));
+
+            echo json_encode(array('message' => 'Item patched successfully'));
+        } else {
+            // Trường hợp id không tồn tại, trả về lỗi
+            http_response_code(404);
+            echo json_encode(array('message' => 'Not Found - ID does not exist'));
+        }
+        break;
 }
