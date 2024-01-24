@@ -12,6 +12,27 @@ switch ($method) {
     case 'GET':
         // Trả về toàn bộ dữ liệu
         echo json_encode($data);
+
+        //SEARCH ....action=search&&name=""
+        // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và tìm kiếm theo trường cụ thể
+        $searchField = isset($_GET['action']) && $_GET['action'] === 'search' ? 'name' : '';
+        $searchTerm = isset($_GET[$searchField]) ? $_GET[$searchField] : '';
+
+        if (!empty($searchField) && !empty($searchTerm)) {
+            // Nếu có trường tìm kiếm và giá trị tìm kiếm, thực hiện tìm kiếm
+            $searchResults = array_filter($data, function ($item) use ($searchField, $searchTerm) {
+                return strpos($item[$searchField], $searchTerm) !== false;
+            });
+
+            // Chuyển kết quả tìm kiếm thành mảng
+            $searchResults = array_values($searchResults);
+
+            // Trả về kết quả tìm kiếm
+            echo json_encode($searchResults);
+        } else {
+            // Nếu không có trường tìm kiếm hoặc giá trị tìm kiếm, trả về toàn bộ dữ liệu
+            echo json_encode($data);
+        }
         break;
 
     case 'POST':
