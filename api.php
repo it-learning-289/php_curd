@@ -1,7 +1,6 @@
 <?php
 
 header('Content-Type: application/json');
-
 // Đọc dữ liệu từ tệp JSON
 $jsonData = file_get_contents('shoes.json');
 $data = json_decode($jsonData, true);
@@ -40,7 +39,6 @@ switch ($method) {
     case 'DELETE':
         // Xử lý yêu cầu DELETE, ví dụ: xóa dữ liệu
         $deleteId = $_GET['id'];
-
         // Kiểm tra xem id cần xóa có tồn tại trong dữ liệu không
         $idExists = in_array($deleteId, array_column($data, 'id'));
 
@@ -115,7 +113,6 @@ switch ($method) {
                     if (isset($patchData['price'])) {
                         $item['price'] = $patchData['price'];
                     }
-
                     // Cập nhật một số trường dữ liệu khác nếu cần
                     // ...
 
