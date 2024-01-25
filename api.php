@@ -30,8 +30,6 @@ switch ($method) {
             // Trả về kết quả tìm kiếm
             echo json_encode($searchResults);
         }
-
-        
         //FILTER   http://localhost:8000/api.php?action=filter&field=price&value=25&comparison=more
         // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và lọc theo trường cụ thể
         $filterField = isset($_GET['action']) && $_GET['action'] === 'filter' ? $_GET['field'] : '';
