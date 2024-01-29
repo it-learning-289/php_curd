@@ -65,27 +65,39 @@ switch ($method) {
             // Trả về kết quả lọc
             echo json_encode($filteredResults);
         }
+
+        //DETAIL
         // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và tìm kiếm theo trường cụ thể
         $searchField = isset($_GET['action']) && $_GET['action'] === 'search' ? $_GET['field'] : '';
         $searchTerm = isset($_GET['value']) ? $_GET['value'] : '';
-
-        if ($searchField === 'id' && is_numeric($searchTerm)) {
-            // Nếu có trường tìm kiếm là 'id' và giá trị là số, thực hiện tìm kiếm
+        // echo $searchField ."\n";
+        // echo $searchTerm ."\n";
+        // echo empty($searchTerm);
+        if (!empty($searchField) && ($searchTerm !== "")) {
+            // Nếu có trường tìm kiếm và giá trị tìm kiếm, thực hiện tìm kiếm
             $searchResults = array_filter($data, function ($item) use ($searchField, $searchTerm) {
-                // Thực hiện so sánh
-                return $item[$searchField] == $searchTerm;
+                // Kiểm tra xem giá trị của trường có phải là số hay không
+                if ($searchField === 'id') {
+                    // Nếu là trường 'id', thực hiện so sánh
+                    // echo "searchField: $searchField, searchTerm: $searchTerm";
+                    return is_numeric($item[$searchField]) && $item[$searchField] == $searchTerm;
+                }
             });
-
-            // Chuyển kết quả tìm kiếm thành mảng
-            $searchResults = array_values($searchResults);
-
+            // Lấy bản ghi đầu tiên (nếu có)
+            $firstResult = reset($searchResults);
             // Trả về kết quả tìm kiếm
-            echo json_encode($searchResults);
-        } else {
-            // Nếu không có trường tìm kiếm là 'id' hoặc giá trị không phải là số, trả về toàn bộ dữ liệu
-            echo json_encode($data);
+            if ($firstResult === false) {
+                // Không tìm thấy dữ liệu, trả về JSON "not found"
+                echo json_encode(["error" => "not found"]);
+            } else {
+                echo json_encode($firstResult);
+            }
         }
 
+
+        if (empty($searchField) && empty($searchField)) {
+            echo json_encode($data);
+        }
         break;
 
     case 'POST':
