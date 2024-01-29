@@ -31,7 +31,6 @@ switch ($method) {
             echo json_encode($searchResults);
         }
 
-        
         //FILTER   http://localhost:8000/api.php?action=filter&field=price&value=25&comparison=more
         // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và lọc theo trường cụ thể
         $filterField = isset($_GET['action']) && $_GET['action'] === 'filter' ? $_GET['field'] : '';
@@ -65,11 +64,40 @@ switch ($method) {
 
             // Trả về kết quả lọc
             echo json_encode($filteredResults);
-        } else {
-            // Nếu không có trường lọc hoặc giá trị lọc không phải là số, trả về toàn bộ dữ liệu
-            echo json_encode($data);
         }
 
+        //DETAIL
+        // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và tìm kiếm theo trường cụ thể
+        $searchField = isset($_GET['action']) && $_GET['action'] === 'search' ? $_GET['field'] : '';
+        $searchTerm = isset($_GET['value']) ? $_GET['value'] : '';
+        // echo $searchField ."\n";
+        // echo $searchTerm ."\n";
+        // echo empty($searchTerm);
+        if (!empty($searchField) && ($searchTerm !== "")) {
+            // Nếu có trường tìm kiếm và giá trị tìm kiếm, thực hiện tìm kiếm
+            $searchResults = array_filter($data, function ($item) use ($searchField, $searchTerm) {
+                // Kiểm tra xem giá trị của trường có phải là số hay không
+                if ($searchField === 'id') {
+                    // Nếu là trường 'id', thực hiện so sánh
+                    // echo "searchField: $searchField, searchTerm: $searchTerm";
+                    return is_numeric($item[$searchField]) && $item[$searchField] == $searchTerm;
+                }
+            });
+            // Lấy bản ghi đầu tiên (nếu có)
+            $firstResult = reset($searchResults);
+            // Trả về kết quả tìm kiếm
+            if ($firstResult === false) {
+                // Không tìm thấy dữ liệu, trả về JSON "not found"
+                echo json_encode(["error" => "not found"]);
+            } else {
+                echo json_encode($firstResult);
+            }
+        }
+
+
+        if (empty($searchField) && empty($searchField)) {
+            echo json_encode($data);
+        }
         break;
 
     case 'POST':
