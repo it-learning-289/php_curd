@@ -62,8 +62,12 @@ switch ($method) {
             // Chuyển kết quả lọc thành mảng
             $filteredResults = array_values($filteredResults);
 
+            $response = array(
+                "data" => $filteredResults
+            );
+
             // Trả về kết quả lọc
-            echo json_encode($filteredResults);
+            echo json_encode($response);
         }
 
         //DETAIL
@@ -122,8 +126,16 @@ switch ($method) {
             // Lấy một phần của dữ liệu dựa trên chỉ số bắt đầu và số mục trên mỗi trang
             $pagedData = array_slice($data, $startIndex, $itemsPerPage);
 
+            $response = array(
+                "page" => $currentPage,
+                "per_page" => count($pagedData),
+                "total" => count($data),
+                "total_pages" => $totalPages,
+                "data" => $pagedData
+            );
+
             // Trả về dữ liệu của trang hiện tại
-            echo json_encode($pagedData);
+            echo json_encode($response);
         }
 
         if (empty($searchField) && empty($searchField) && ($itemsPerPage == "") && ($multyPage == "")) {
