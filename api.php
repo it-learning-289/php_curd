@@ -127,9 +127,9 @@ switch ($method) {
         }
 
         if (empty($searchField) && empty($searchField) && ($itemsPerPage == "") && ($multyPage == "")) {
-            //  echo json_encode($data);
+             echo json_encode($data);
 
-            echo json_encode(["data" => json_encode($data)]);
+            // echo json_encode(["data" => json_encode($data)]);
         }
         break;
 
