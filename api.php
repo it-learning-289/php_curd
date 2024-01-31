@@ -94,9 +94,42 @@ switch ($method) {
             }
         }
 
+        //MUILTI PAGE
+        $itemsPerPage = isset($_GET['count']) ? $_GET['count'] : '';
+        // echo $itemsPerPage;
+        $multyPage = isset($_GET['page']) ? $_GET['page'] : '';
+        // echo $multyPage;
+        //số trang hoặc số dữ liệu mỗi trang <1 thì invalid
+        if ($multyPage != "" && $itemsPerPage != "") {
+            if ($multyPage < 1 || !ctype_digit($multyPage)) {
+                // echo "1";
+                echo json_encode(["error" => "page không hợp lí"]);
+            } else if ($itemsPerPage < 1 || !ctype_digit($itemsPerPage)) {
+                echo json_encode(["error" => "count không hợp lí"]);
+            }
+            // Số mục hiển thị trên mỗi trang
+            //   $itemsPerPage = 100;
 
-        if (empty($searchField) && empty($searchField)) {
-            echo json_encode($data);
+            // Trang hiện tại, mặc định là 1
+            $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+            // Tính tổng số trang
+            $totalPages = ceil(count($data) / $itemsPerPage);
+
+            // Tính chỉ số bắt đầu của dữ liệu trên trang hiện tại
+            $startIndex = ($currentPage - 1) * $itemsPerPage;
+
+            // Lấy một phần của dữ liệu dựa trên chỉ số bắt đầu và số mục trên mỗi trang
+            $pagedData = array_slice($data, $startIndex, $itemsPerPage);
+
+            // Trả về dữ liệu của trang hiện tại
+            echo json_encode($pagedData);
+        }
+
+        if (empty($searchField) && empty($searchField) && ($itemsPerPage == "") && ($multyPage == "")) {
+             echo json_encode($data);
+
+            // echo json_encode(["data" => json_encode($data)]);
         }
         break;
 
