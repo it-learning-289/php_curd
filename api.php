@@ -19,26 +19,38 @@ switch ($method) {
         //SEARCH ....action=search&&name=""
         // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và tìm kiếm theo trường cụ thể
         $searchField = isset($_GET['action']) && $_GET['action'] === 'search' ? 'name' : '';
+        $searchID = isset($_GET['action']) && $_GET['action'] === 'search' ? 'ID' : '';
         $searchTerm = isset($_GET[$searchField]) ? $_GET[$searchField] : '';
-
+        $searchDetail = isset($_GET[$searchID]) ? $_GET[$searchID] : '';
+        // echo $searchDetail;
         if (!empty($searchField) && !empty($searchTerm)) {
             // Nếu có trường tìm kiếm và giá trị tìm kiếm, thực hiện tìm kiếm
             // $searchResults = array_filter($data, function ($item) use ($searchField, $searchTerm) {
             //     return strpos($item[$searchField], $searchTerm) !== false;
             // });
-            $sql = "SELECT * FROM shoes WHERE name LIKE '%$searchTerm%'";
-            $result = $pdo->query($sql);
-            $searchResults = $result->fetchAll(PDO::FETCH_ASSOC);
+            $sqlName = "SELECT * FROM shoes WHERE name LIKE '%$searchTerm%'";
+            $resultName = $pdo->query($sqlName);
+            $searchResults = $resultName->fetchAll(PDO::FETCH_ASSOC);
             // Chuyển kết quả tìm kiếm thành mảng
             // $searchResults = array_values($searchResults);   
             // Trả về kết quả tìm kiếm
             echo json_encode($searchResults);
-        } else {
-            $stmt = $pdo->query('SELECT * FROM shoes');
-            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $json = json_encode($data, JSON_PRETTY_PRINT);
-            echo $json;
+        } else if (!empty($searchID) && !empty($searchDetail)) {
+            $sqlId = "SELECT * FROM shoes WHERE id = '$searchDetail'";
+            $resultId = $pdo->query($sqlId);
+            $searchIdd = $resultId->fetchAll(PDO::FETCH_ASSOC);
+            // Chuyển kết quả tìm kiếm thành mảng
+            // $searchResults = array_values($searchResults);   
+            // Trả về kết quả tìm kiếm
+            echo json_encode($searchIdd);
         }
+
+        // else {
+        //     $stmt = $pdo->query('SELECT * FROM shoes');
+        //     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        //     $json = json_encode($data, JSON_PRETTY_PRINT);
+        //     echo $json;
+        // }
 
         break;
 }
