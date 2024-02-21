@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 $host = '192.168.1.103:8306';
 $dbname = 'tiendata';
 $username = 'root';
@@ -7,33 +8,14 @@ $password = 'root';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $stmt = $pdo->query('SELECT * FROM shoes');
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $json = json_encode($data, JSON_PRETTY_PRINT);
-    header('Content-Type: application/json');
-    // echo $json;
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
 
-
-
-
-
-// header('Content-Type: application/json');
-// // Đọc dữ liệu từ tệp JSON
-// $jsonData = file_get_contents('shoes.json');
-// $data = json_decode($jsonData, true);
-
 // // Kiểm tra phương thức HTTP
 $method = $_SERVER['REQUEST_METHOD'];
-
 switch ($method) {
     case 'GET':
-        // Trả về toàn bộ dữ liệu
-        // echo json_encode($data);
-
         //SEARCH ....action=search&&name=""
         // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và tìm kiếm theo trường cụ thể
         $searchField = isset($_GET['action']) && $_GET['action'] === 'search' ? 'name' : '';
@@ -48,11 +30,16 @@ switch ($method) {
             $result = $pdo->query($sql);
             $searchResults = $result->fetchAll(PDO::FETCH_ASSOC);
             // Chuyển kết quả tìm kiếm thành mảng
-            $searchResults = array_values($searchResults);
-
+            // $searchResults = array_values($searchResults);   
             // Trả về kết quả tìm kiếm
             echo json_encode($searchResults);
+        } else {
+            $stmt = $pdo->query('SELECT * FROM shoes');
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $json = json_encode($data, JSON_PRETTY_PRINT);
+            echo $json;
         }
+
         break;
 }
             // case 'POST':
