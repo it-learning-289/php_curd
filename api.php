@@ -19,10 +19,9 @@ switch ($method) {
         //SEARCH ....action=search&&name=""
         // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và tìm kiếm theo trường cụ thể
         $searchField = isset($_GET['action']) && $_GET['action'] === 'search' ? 'name' : '';
-        $searchID = strtolower(isset($_GET['action']) && $_GET['action'] === 'search' ? 'ID' : '');
+        $searchID = (isset($_GET['action']) && $_GET['action'] === 'search' ? 'id' : '');
         $searchTerm = isset($_GET[$searchField]) ? $_GET[$searchField] : '';
         $searchDetail = isset($_GET[$searchID]) ? $_GET[$searchID] : '';
-        // echo $searchDetail;
         if (!empty($searchField) && !empty($searchTerm)) {
             // Nếu có trường tìm kiếm và giá trị tìm kiếm, thực hiện tìm kiếm
             // $searchResults = array_filter($data, function ($item) use ($searchField, $searchTerm) {
