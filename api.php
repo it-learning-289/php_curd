@@ -16,17 +16,18 @@ try {
 $method = $_SERVER['REQUEST_METHOD'];
 switch ($method) {
     case 'GET':
-        //SEARCH ....action=search&&name=""
-        // Xử lý yêu cầu GET, ví dụ: lấy dữ liệu và tìm kiếm theo trường cụ thể
+        //SEARCH name
         $searchField = isset($_GET['action']) && $_GET['action'] === 'search' ? 'name' : '';
-        $searchID = (isset($_GET['action']) && $_GET['action'] === 'search' ? 'id' : '');
         $searchTerm = isset($_GET[$searchField]) ? $_GET[$searchField] : '';
+
+        $searchID = (isset($_GET['action']) && $_GET['action'] === 'search' ? 'id' : '');
         $searchDetail = isset($_GET[$searchID]) ? $_GET[$searchID] : '';
+
+        // $filterField = isset($_GET['action']) && $_GET['action'] === 'filter' ? $_GET['field'] : '';
+        // $filterValue = isset($_GET['value']) ? $_GET['value'] : '';
+        // $comparison = isset($_GET['comparison']) ? $_GET['comparison'] : 'more';
+
         if (!empty($searchField) && !empty($searchTerm)) {
-            // Nếu có trường tìm kiếm và giá trị tìm kiếm, thực hiện tìm kiếm
-            // $searchResults = array_filter($data, function ($item) use ($searchField, $searchTerm) {
-            //     return strpos($item[$searchField], $searchTerm) !== false;
-            // });
             $sqlName = "SELECT * FROM shoes WHERE name LIKE '%$searchTerm%'";
             $resultName = $pdo->query($sqlName);
             $searchResults = $resultName->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +35,9 @@ switch ($method) {
             // $searchResults = array_values($searchResults);   
             // Trả về kết quả tìm kiếm
             echo json_encode($searchResults);
-        } else if (!empty($searchID) && !empty($searchDetail)) {
+        }
+        //SEARCH DETAIL
+        else if (!empty($searchID) && !empty($searchDetail)) {
             $sqlId = "SELECT * FROM shoes WHERE id = '$searchDetail'";
             $resultId = $pdo->query($sqlId);
             $searchIdd = $resultId->fetchAll(PDO::FETCH_ASSOC);
@@ -43,17 +46,34 @@ switch ($method) {
             // Trả về kết quả tìm kiếm
             echo json_encode($searchIdd);
         }
+        //Filter
+        else if (isset($_GET['min_number']) && isset($_GET['max_number'])) {
+            // Get the min and max numbers from the parameters
+            $minNumber = $_GET['min_number'];
+            $maxNumber = $_GET['max_number'];
 
-        // else {
-        //     $stmt = $pdo->query('SELECT * FROM shoes');
-        //     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        //     $json = json_encode($data, JSON_PRETTY_PRINT);
-        //     echo $json;
-        // }
+            // SQL query to filter data with less than and greater than conditions
+            $sql = "SELECT * FROM shoes WHERE price < $maxNumber AND price> $minNumber";
+
+            // Execute query
+            $result = $pdo->query($sql);
+
+            // Check if there are results
+            if ($result) {
+                $response = $result->fetchAll(PDO::FETCH_ASSOC);
+                // Return data as JSON
+                echo json_encode($response);
+            }
+        } else {
+            $stmt = $pdo->query('SELECT * FROM shoes');
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $json = json_encode($data, JSON_PRETTY_PRINT);
+            echo $json;
+        }
 
         break;
 }
-            // case 'POST':
+            case 'POST':
             // // Xử lý yêu cầu POST, ví dụ: thêm mới dữ liệu
             // // Đọc dữ liệu từ yêu cầu
             // $postData = json_decode(file_get_contents('php://input'), true);
@@ -73,7 +93,7 @@ switch ($method) {
             // file_put_contents('shoes.json', json_encode($data));
             // // Trả về dữ liệu mới đã thêm
             // echo json_encode($newItem);
-            // break;
+            break;
 
             // case 'DELETE':
             // // Xử lý yêu cầu DELETE, ví dụ: xóa dữ liệu
