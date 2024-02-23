@@ -94,38 +94,37 @@ switch ($method) {
             }
         }
         //PAGINATION
-        if ($_GET['page'] != "" ){
+        if ($_GET['page'] != "") {
             $limit = 10; // Number of records per page
-        // Get page numfber from the request, default to page 1
-        $page = isset($_GET['page']) ? $_GET['page'] : 1;
-        $start = ($page - 1) * $limit;
+            // Get page numfber from the request, default to page 1
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            $start = ($page - 1) * $limit;
 
-        // Query to fetch records for the current page
-        $stmt = $pdo->prepare("SELECT * FROM shoes LIMIT :start, :limit");
-        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-        $stmt->execute();
-        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // Query to fetch records for the current page
+            $stmt = $pdo->prepare("SELECT * FROM shoes LIMIT :start, :limit");
+            $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Total number of records (for pagination)
-        $total_stmt = $pdo->query("SELECT COUNT(*) FROM shoes");
-        $total_rows = $total_stmt->fetchColumn();
-        $total_pages = ceil($total_rows / $limit);
+            // Total number of records (for pagination)
+            $total_stmt = $pdo->query("SELECT COUNT(*) FROM shoes");
+            $total_rows = $total_stmt->fetchColumn();
+            $total_pages = ceil($total_rows / $limit);
 
-        // Construct the API response
-        $response = [
-            'page' => $page,
-            'total_pages' => $total_pages,
-            'total_records' => $total_rows,
-            'users' => $users
-        ];
+            // Construct the API response
+            $response = [
+                'page' => $page,
+                'total_pages' => $total_pages,
+                'total_records' => $total_rows,
+                'users' => $users
+            ];
 
-        // Set headers to JSON
-        header('Content-Type: application/json');
+            // Set headers to JSON
 
-        // Output JSON response
-        echo json_encode($response);
-    }
+            // Output JSON response
+            echo json_encode($response);
+        }
         // else {
         //     $stmt = $pdo->query('SELECT * FROM shoes');
         //     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
