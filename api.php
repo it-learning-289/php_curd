@@ -47,6 +47,9 @@ switch ($method) {
     case 'POST':
         require_once 'shoe/post.php';
         break;
+    case 'DELETE':
+        require_once
+        break;
 }
 
             // case 'DELETE':
