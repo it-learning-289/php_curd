@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ERROR | E_PARSE);
 
 /** FOR DEV_TIEN */
 header('Content-Type: application/json');
@@ -8,7 +9,7 @@ $username = 'root';
 $password = 'root';
 
 try {
-    
+
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
@@ -24,7 +25,7 @@ try {
 // $username = 'root';
 // $password = 'root';
 
-// PDO connection string
+// // PDO connection string
 // $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $port;
 
 // try {
