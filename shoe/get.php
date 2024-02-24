@@ -57,14 +57,14 @@ if ($_GET['page'] != "") {
     $start = ($page - 1) * $limit;
 
     // Query to fetch records for the current page
-    $stmt = $pdo->prepare("SELECT * FROM shoes LIMIT :start, :limit");
+    $stmt = $pdo->prepare("SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes INNER JOIN category   ON shoes.categories=category.id LIMIT :start, :limit");
     $stmt->bindParam(':start', $start, PDO::PARAM_INT);
     $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
     $stmt->execute();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Total number of records (for pagination)
-    $total_stmt = $pdo->query("SELECT COUNT(*) FROM shoes");
+    $total_stmt = $pdo->query("SELECT COUNT(*)  from (SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes INNER JOIN category   ON shoes.categories=category.id) tmp");
     $total_rows = $total_stmt->fetchColumn();
     $total_pages = ceil($total_rows / $limit);
 

@@ -1,26 +1,48 @@
 <?php
+ $data = json_decode(file_get_contents("php://input"), true);
+ if (empty($data['name']) ) {
+     // If name or email is missing, return an error
+     http_response_code(400); // Bad Request
+     echo json_encode(array("message" => "Name   is required."));
+     exit;
+ }
+ if ( empty($data['price'])) {
+     // If name or email is missing, return an error
+     http_response_code(400); // Bad Request
+     echo json_encode(array("message" => "price  is required."));
+     exit;
+ }
+ if (empty($data['categories'])) {
+     // If name or email is missing, return an error
+     http_response_code(400); // Bad Request
+     echo json_encode(array("message" => "categories  is required."));
+     exit;
+ }
 
-// Xử lý yêu cầu POST, ví dụ: thêm mới dữ liệu
-// Đọc dữ liệu từ yêu cầu
-$postData = json_decode(file_get_contents('php://input'), true);
+ $name = $data['name'];
+ $price = $data['price'];
+ $categories = $data['categories'];
 
-// // Đọc giá trị id hiện tại từ tệp hoặc biến (id_counter.txt là một tệp lưu trữ giá trị id)
-// $idCounter = file_get_contents('id_counter.txt');
+ // Prepare the SQL statement
+ $stmt = $pdo->prepare("INSERT INTO shoes (name, price, categories) VALUES (:name, :price, :categories)");
 
-// // Tăng giá trị id và lưu lại vào tệp hoặc biến
-// $newItemId = $idCounter + 1;
-// file_put_contents('id_counter.txt', $newItemId);
-$stmt = $pdo->prepare("SELECT * FROM shoes LIMIT :start, :limit");
-// Thêm dữ liệu mới
-$newItem = array(
-    'name' => $postData['name'],
-    'price' => $postData['price']
-);
+ // Bind parameters
+ $stmt->bindParam(':name', $name);
+ $stmt->bindParam(':price', $price);
+ $stmt->bindParam(':categories', $categories);
 
-$data[] = $newItem;
+ // Execute the statement
+ try {
+     $stmt->execute();
+     http_response_code(201); // Created
+     echo json_encode(array("message" => "created successfully."));
+ } catch (PDOException $e) {
+     http_response_code(500); // Internal Server Error
+     echo json_encode(array("message" => "Database error: " . $e->getMessage()));
+ }
 
 // Lưu lại dữ liệu mới vào tệp JSON
-file_put_contents('shoes.json', json_encode($data));
+// file_put_contents('shoes.json', json_encode($data));
 
 // Trả về dữ liệu mới đã thêm
-echo json_encode($newItem);
+// echo json_encode($newItem);
