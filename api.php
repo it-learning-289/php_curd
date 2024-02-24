@@ -37,9 +37,6 @@ try {
     echo "Connection failed: " . $e->getMessage();
 }
 
-
-
-
 // // Kiểm tra phương thức HTTP
 $method = $_SERVER['REQUEST_METHOD'];
 switch ($method) {
@@ -47,7 +44,7 @@ switch ($method) {
         require_once 'shoe/get.php';
         break;
     case 'POST':
-
+        require_once 'shoe/post.php';
         break;
 }
 
