@@ -11,7 +11,7 @@ $searchDetail = isset($_GET[$searchID]) ? $_GET[$searchID] : '';
 // $comparison = isset($_GET['comparison']) ? $_GET['comparison'] : 'more';
 
 if (!empty($searchField) && !empty($searchTerm)) {
-    $sqlName = "SELECT * FROM shoes WHERE name LIKE '%$searchTerm%'";
+    $sqlName = "SELECT * FROM cars WHERE name LIKE '%$searchTerm%'";
     $resultName = $pdo->query($sqlName);
     $searchResults = $resultName->fetchAll(PDO::FETCH_ASSOC);
     // Chuyển kết quả tìm kiếm thành mảng
@@ -21,7 +21,7 @@ if (!empty($searchField) && !empty($searchTerm)) {
 }
 //SEARCH DETAIL
 else if (!empty($searchID) && !empty($searchDetail)) {
-    $sqlId = "SELECT * FROM shoes WHERE id = '$searchDetail'";
+    $sqlId = "SELECT * FROM cars WHERE id = '$searchDetail'";
     $resultId = $pdo->query($sqlId);
     $searchIdd = $resultId->fetchAll(PDO::FETCH_ASSOC);
     // Chuyển kết quả tìm kiếm thành mảng
@@ -37,7 +37,7 @@ else if (isset($_GET['min_number']) && isset($_GET['max_number'])) {
     $maxNumber = $_GET['max_number'];
 
     // SQL query to filter data with less than and greater than conditions
-    $sql = "SELECT * FROM shoes WHERE price < $maxNumber AND price> $minNumber";
+    $sql = "SELECT * FROM cars WHERE price < $maxNumber AND price> $minNumber";
 
     // Execute query
     $result = $pdo->query($sql);
@@ -57,16 +57,14 @@ if ($_GET['page'] != "") {
     $start = ($page - 1) * $limit;
 
     // Query to fetch records for the current page
-    $stmt = $pdo->prepare("SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes INNER JOIN category   ON shoes.categories=category.id LIMIT :start, :limit");
+    $stmt = $pdo->prepare("SELECT 'name', price FROM cars LIMIT :start, :limit");
     $stmt->bindParam(':start', $start, PDO::PARAM_INT);
     $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
     $stmt->execute();
-    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // var_dump($users);
+    $cars = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Total number of records (for pagination)
-    $total_stmt = $pdo->query("SELECT COUNT(*)  from (SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes INNER JOIN category   ON shoes.categories=category.id) tmp");
+    $total_stmt = $pdo->query("SELECT count(*) FROM cars");
     $total_rows = $total_stmt->fetchColumn();
     $total_pages = ceil($total_rows / $limit);
 
@@ -75,7 +73,7 @@ if ($_GET['page'] != "") {
         'page' => $page,
         'total_pages' => $total_pages,
         'total_records' => $total_rows,
-        'users' => $users
+        'cars' => $cars
     ];
 
     // Set headers to JSON
