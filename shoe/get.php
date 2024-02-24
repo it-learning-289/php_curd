@@ -29,6 +29,7 @@ else if (!empty($searchID) && !empty($searchDetail)) {
     // Trả về kết quả tìm kiếm
     echo json_encode($searchIdd);
 }
+
 //Filter
 else if (isset($_GET['min_number']) && isset($_GET['max_number'])) {
     // Get the min and max numbers from the parameters
