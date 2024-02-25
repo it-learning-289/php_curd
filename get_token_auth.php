@@ -1,25 +1,21 @@
 <?php
 try {
+    $data = json_decode(file_get_contents("php://input"), true);
 
-        $data = json_decode(file_get_contents("php://input"), true);
-        $name = $data['name'];
-        $price = $data['price'];
-        $categories = $data['category'];
+    if (isset($data['username']) && !empty($data['username']) && isset($data['password']) && !empty($data['password'])) {
+        // Both username and password are provided and not empty
+        $username = $data['username'];
+        $password = $data['password'];
 
-        // Prepare the SQL statement
-        $stmt = $pdo->prepare("INSERT INTO shoes (name, price, categories) VALUES (:name, :price, :category)");
+        $token = base64_encode($username.":".$password);
 
-        // Bind parameters
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':price', $price);
-        $stmt->bindParam(':category', $categories);
-
-        // Execute the statement
-        $stmt->execute();
-        http_response_code(201); // Created
-        echo json_encode(array("message" => "created successfully."));
-
+        http_response_code(200); // OK
+        echo json_encode(array("tungtv_authen_token" => $token));
+    } else {
+        // Either username or password is missing or empty
+        throw new ErrorException("Username and password are required.");
+    }
 } catch (Exception $e) {
     http_response_code(500); // Internal Server Error
-    echo json_encode(array("message" => "Database error: " . $e->getMessage()));
+    echo json_encode(array("message" => "Error: " . $e->getMessage()));
 }
