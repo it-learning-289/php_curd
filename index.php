@@ -41,23 +41,19 @@ try {
 // // Kiểm tra phương thức HTTP
 // var_dump($_SERVER);
 // die();
-$pathInfoArr = explode("/", $_SERVER["PATH_INFO"]);
-$module1 = $pathInfoArr[2];
-// var_dump($module1);
-// die();
-// var_dump(str_replace("s", "", $module));
-// die();
+
+require_once'./Utils.php';
+
 $method = $_SERVER['REQUEST_METHOD'];
 switch ($method) {
     case 'GET':
-        require_once substr($module1, 0, strlen($module1) - 1) . '/get.php';
+        require_once requireFileByHttpPathInfo("GET");
         break;
     case 'POST':
-        require_once substr($module1, 0, strlen($module1) - 1) . '/post.php';
+        require_once requireFileByHttpPathInfo("POST");
         break;
-
     case 'DELETE':
-        require_once substr($module1, 0, strlen($module1) - 1) . '/delete.php';
+        require_once requireFileByHttpPathInfo("DELETE");
         break;
 
         // case 'PUT':
