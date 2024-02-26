@@ -2,17 +2,20 @@
 // var_dump($module1);
 // die();
 
-function checkModuleExits($x,$array){
-    if (in_array($x,$array)){
+
+
+function checkModuleExits($x, $array)
+{
+    if (in_array($x, $array)) {
         return true;
     }
-  return false;
+    return false;
 }
 function limitPermition($username, $module)
 {
     $arrAuthPermit = [
         "tientv" => ["cars"],
-        "tien_devv" => ["cars"]
+        "tien_devv" => ["/shoes/@post","/shoes/@get"]
     ];
     $check  = true;
     foreach ($arrAuthPermit as $key => $value) {
@@ -50,9 +53,9 @@ function checkAuthForApi()
         exit;
     }
 }
-function getModuleFromApi(){
+function getModuleFromApi()
+{
     return explode("/", $_SERVER["PATH_INFO"])[2];
-    
 }
 function requireFileByHttpPathInfo($method)
 {
@@ -93,19 +96,19 @@ function listSubDir($dir)
     $rs = array();
     $subdirs = array_filter(glob($dir . '/*'), 'is_dir');
     // dd($subdirs["1"]);
-    $moduleFromApi = getModuleFromApi(); 
+    $moduleFromApi = getModuleFromApi();
     // dd($arrModule);
     $arrModule = array();
     foreach ($subdirs as $subdir) {
-        $item =  explode("/",$subdir);
-        $arrModule[] = $item[2]; 
+        $item =  explode("/", $subdir);
+        $arrModule[] = $item[2];
         // d($item[2]);
         $rs[] = str_replace($dir . "/", "", $subdir);
     }
     // d(substr($moduleFromApi, 0, strlen($moduleFromApi) - 1));
-    if(!checkModuleExits(substr($moduleFromApi, 0, strlen($moduleFromApi) - 1),$arrModule)){
-            echo json_encode(array("message"=>"api is invalid"));
-            exit;
+    if (!checkModuleExits(substr($moduleFromApi, 0, strlen($moduleFromApi) - 1), $arrModule)) {
+        echo json_encode(array("message" => "api is invalid"));
+        exit;
     }
     // die();
     return $rs;

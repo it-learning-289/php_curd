@@ -56,7 +56,7 @@ switch ($method) {
     case 'GET':
         require_once requireFileByHttpPathInfo("GET");
         break;
-        case 'POST':
+    case 'POST':
         require_once requireFileByHttpPathInfo("POST");
         break;
     case 'DELETE':
