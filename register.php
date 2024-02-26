@@ -6,10 +6,14 @@ try {
         // Both username and password are provided and not empty
         $username = $data['username'];
         $password = $data['password'];
-
-        $token = base64_encode($username.":".$password);
-        http_response_code(200); // OK
-        echo json_encode(array("tungtv_authen_token" => $token));
+        $stmt = $pdo->prepare("INSERT INTO user_login (username, password) VALUES (:name, :password)");
+        // Bind parameters
+        $stmt->bindParam(':name', $username);
+        $stmt->bindParam(':password', $password);
+        // Execute the statement
+        $stmt->execute();
+        http_response_code(201); // Created
+        echo json_encode(array("message" => "created successfully."));
     } else {
         // Either username or password is missing or empty
         throw new ErrorException("Username and password are required.");

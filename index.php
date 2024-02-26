@@ -1,6 +1,14 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 
+function dd($var) {
+    var_dump($var);
+    die;
+}
+function d($var) {
+    var_dump($var);
+}
+
 // /** FOR DEV_TIEN */
 // header('Content-Type: application/json');
 // $host = '192.168.1.103:8306';
@@ -43,13 +51,12 @@ try {
 // die();
 
 require_once'./Utils.php';
-
 $method = $_SERVER['REQUEST_METHOD'];
 switch ($method) {
     case 'GET':
         require_once requireFileByHttpPathInfo("GET");
         break;
-    case 'POST':
+        case 'POST':
         require_once requireFileByHttpPathInfo("POST");
         break;
     case 'DELETE':
