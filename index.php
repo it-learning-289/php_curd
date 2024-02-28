@@ -5,6 +5,7 @@ function dd($var) {
     var_dump($var);
     die;
 }
+
 function d($var) {
     var_dump($var);
 }
@@ -51,19 +52,20 @@ try {
 // die();
 
 require_once'./Utils.php';
-$method = $_SERVER['REQUEST_METHOD'];
-switch ($method) {
-    case 'GET':
-        require_once requireFileByHttpPathInfo("GET");
-        break;
-    case 'POST':
-        require_once requireFileByHttpPathInfo("POST");
-        break;
-    case 'DELETE':
-        require_once requireFileByHttpPathInfo("DELETE");
-        break;
+require_once'./api_config.php';
+// $method = $_SERVER['REQUEST_METHOD'];
+// switch ($method) {
+//     case 'GET':
+//         require_once requireFileByHttpPathInfo("GET");
+//         break;
+//     case 'POST':
+//         require_once requireFileByHttpPathInfo("POST");
+//         break;
+//     case 'DELETE':
+//         require_once requireFileByHttpPathInfo("DELETE");
+//         break;
 
         // case 'PUT':
 
         // break;
-}
+// }

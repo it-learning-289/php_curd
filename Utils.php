@@ -17,7 +17,7 @@ function limitPermition($username, $module)
         "tientv" => ["cars"],
         "tien_devv" => ["/shoes/@post","/shoes/@get"]
     ];
-    $check  = true;
+    // $check  = true;
     foreach ($arrAuthPermit as $key => $value) {
         if ($username === $key && in_array($module, $value)) {
             return true;
@@ -57,6 +57,7 @@ function getModuleFromApi()
 {
     return explode("/", $_SERVER["PATH_INFO"])[2];
 }
+
 function requireFileByHttpPathInfo($method)
 {
     $rs = "";

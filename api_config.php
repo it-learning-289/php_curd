@@ -15,3 +15,11 @@ $apiMap = [
     "/shoes/@get" =>  ["path" => "./modules/shoe/get.php@shoeGet"],
     "/shoes/@post" =>  ["path" => "./modules/shoe/post.php@a"]
 ];
+$method = strtolower($_SERVER['REQUEST_METHOD']);
+dd($method);
+foreach($apiMap as $key=>$value){
+//   d( explode("/", $key));
+if ()  
+
+}
+die();
