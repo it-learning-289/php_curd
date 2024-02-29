@@ -23,8 +23,17 @@ function shoePost()
 
             // Execute the statement
             $stmt->execute();
-            http_response_code(201); // Created
-            echo json_encode(array("message" => "created successfully."));
+            // http_response_code(201); // Created
+            // echo json_encode(array("message" => "created successfully."));
+            if ($stmt->rowCount() == 0) {
+                // Handle the case where 0 rows were affected
+                $message = "No matching records found for creation";
+            } else {
+                // Handle the successful delete operation
+                $message = "created successfully";
+            }
+            http_response_code(200); // OK
+            echo json_encode(array("message" => $message));
         }
     } catch (Exception $e) {
         http_response_code(500); // Internal Server Error
@@ -86,3 +95,4 @@ function shoePost()
     // Trả về dữ liệu mới đã thêm
     // echo json_encode($newItem);
 }
+shoePost();

@@ -11,26 +11,30 @@ $apiMap = [
     ],
     "/cars\/(\d.*)/delete" => ["path" => "./modules/car/delete.php@getTokenAuth"],
     "/cars/get" =>  ["path" => "./modules/car/get.php@getTokenAuth"],
-    "/shoes\/(\d.*)/delete" => ["path" => "./modules/car/delete.php@getTokenAuth"],
+    "/shoes\/(\d.*)/delete" => ["path" => "./modules/shoe/delete.php@getTokenAuth"],
     "/shoes/get" =>  ["path" => "./modules/shoe/get.php@shoeGet"],
     "/shoes/post" =>  ["path" => "./modules/shoe/post.php@a"]
 ];
 $method = strtolower($_SERVER['REQUEST_METHOD']);
-$request = explode("/",$_SERVER[ "PATH_INFO"]);
-// dd($request);
-foreach($apiMap as $key=>$value){
-//   d( explode("/", $key)[1]);
-if (($request[2] === explode("/", $key)[1])&&($method===explode("/", $key)[2])) {
+// dd($method);
+$request = explode("/", $_SERVER["PATH_INFO"]);
+// dd($request[2]);
+// dd(explode("/", "/shoes\/(\d.*)/delete")[1]);
+foreach ($apiMap as $key => $value) {
+    //   d( explode("/", $key)[1] ." " .explode("/", $key)[3]);
+    // d($key);
+    if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[2])) {
         // dd(explode("@", $value["path"])); 
         $temp = explode("@", $value["path"])[0];
-
         // dd($temp);
         require_once $temp;
-        die();
-        // explode("@",$temp)[1]();
-
-}
-
-
+        exit;
+    } else if (($request[2] === substr(explode("/", $key)[1], 0, -1)) && ($method === explode("/", $key)[3])) {
+        // dd(explode("@", $value["path"])); 
+        $temp = explode("@", $value["path"])[0];
+        // dd($temp);
+        require_once $temp;
+        exit;
+    }
 }
 // die();
