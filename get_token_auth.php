@@ -22,3 +22,4 @@ function get_token_auth()
         echo json_encode(array("message" => "Error: " . $e->getMessage()));
     }
 }
+get_token_auth();

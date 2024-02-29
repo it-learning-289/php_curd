@@ -1,6 +1,7 @@
 <?php
 function register()
 {
+  
     global $pdo;
     try {
         $data = json_decode(file_get_contents("php://input"), true);
@@ -33,3 +34,4 @@ function register()
         echo json_encode(array("message" => "Error: " . $e->getMessage()));
     }
 }
+register();
