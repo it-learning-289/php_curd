@@ -2,11 +2,8 @@
 // var_dump($module1);
 // die();
 
-
-
-function checkModuleExits($x, $array)
-{
-    if (in_array($x, $array)) {
+function checkModuleExits($x,$array){
+    if (in_array($x,$array)){
         return true;
     }
     return false;

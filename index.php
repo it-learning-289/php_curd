@@ -1,22 +1,28 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 
-function dd($var) {
+//DEBUG
+function dd($var)
+{
     var_dump($var);
     die;
 }
+<<<<<<< HEAD
 
 function d($var) {
+=======
+function d($var)
+{
+>>>>>>> 6714745 (dev_tien dev_tung)
     var_dump($var);
 }
+//FOR DEV_TIEN
+require_once './Dev_Tien.php';
 
-// /** FOR DEV_TIEN */
-// header('Content-Type: application/json');
-// $host = '192.168.1.103:8306';
-// $dbname = 'tiendata';
-// $username = 'root';
-// $password = 'root';
+//FOR DEV_TUNG
+// require_once'./Dev_Tung.php';
 
+<<<<<<< HEAD
 // try {
 
 //     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -64,6 +70,20 @@ require_once'./api_config.php';
 //     case 'DELETE':
 //         require_once requireFileByHttpPathInfo("DELETE");
 //         break;
+=======
+require_once './Utils.php';
+$method = $_SERVER['REQUEST_METHOD'];
+switch ($method) {
+    case 'GET':
+        require_once requireFileByHttpPathInfo("GET");
+        break;
+    case 'POST':
+        require_once requireFileByHttpPathInfo("POST");
+        break;
+    case 'DELETE':
+        require_once requireFileByHttpPathInfo("DELETE");
+        break;
+>>>>>>> 6714745 (dev_tien dev_tung)
 
         // case 'PUT':
 
