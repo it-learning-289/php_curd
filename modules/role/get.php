@@ -16,6 +16,7 @@
         }
        
     }
+    
     // dd($arrAuthPermit);
     echo json_encode($arrAuthPermit);
 // }
