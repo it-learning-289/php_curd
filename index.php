@@ -12,11 +12,11 @@ function d($var)
 {
     var_dump($var);
 }
-//FOR DEV_TIEN
-require_once './Dev_Tien.php';
+// FOR DEV_TIEN
+// require_once './Dev_Tien.php';
 
 //FOR DEV_TUNG
-// require_once'./Dev_Tung.php';
+require_once'./Dev_Tung.php';
 
 // // Kiểm tra phương thức HTTP
 // var_dump($_SERVER);

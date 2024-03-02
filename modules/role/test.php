@@ -9,8 +9,14 @@
     foreach ($result as $value) {
         // d($result[$key]["username"]);
         // d($result[$key]["role"]);
-        $arrAuthPermit[$value["username"]] = explode(",", $value["role"]);
+        if(empty($value["role"])) {
+            $arrAuthPermit[$value["username"]] = [];
+        } else {
+            $arrAuthPermit[$value["username"]] = explode(",", $value["role"]);
+        }
+       
     }
+    
     // dd($arrAuthPermit);
     echo json_encode($arrAuthPermit);
 // }
