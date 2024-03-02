@@ -2,8 +2,9 @@
 // var_dump($module1);
 // die();
 
-function checkModuleExits($x,$array){
-    if (in_array($x,$array)){
+function checkModuleExits($x, $array)
+{
+    if (in_array($x, $array)) {
         return true;
     }
     return false;
@@ -12,7 +13,8 @@ function limitPermition($username, $module)
 {
     $arrAuthPermit = [
         "tientv" => ["cars"],
-        "tien_devv" => ["/shoes/@post","/shoes/@get"]
+        "tien_devv" => ["/shoes/get"]
+        // "tien_devv" => ["shoes"]
     ];
     // $check  = true;
     foreach ($arrAuthPermit as $key => $value) {
@@ -26,6 +28,8 @@ function limitPermition($username, $module)
 function getUsernamePassFromToken()
 {
     $tungtvAuthTokenDecode = base64_decode($_SERVER["HTTP_TUNGTV_AUTHEN_TOKEN"]);
+    // dd($tungtvAuthTokenDecode);
+    // dd(base64_decode("dGllbl9kZXZ2OmFzZmRzZ3NkZmho"));
     return explode(':', $tungtvAuthTokenDecode);
 }
 function checkAuthForApi()
@@ -34,19 +38,23 @@ function checkAuthForApi()
     if (array_key_exists("HTTP_TUNGTV_AUTHEN_TOKEN", $_SERVER)) {
         // $tungtvAuthTokenDecode = base64_decode($_SERVER["HTTP_TUNGTV_AUTHEN_TOKEN"]);
         // list($decoded_username, $decoded_password) = explode(':', $tungtvAuthTokenDecode);
+        // dd(base64_decode("dGllbl9kZXZ2OmFzZmRzZ3NkZmho"));
+        // dd($_SERVER["HTTP_TUNGTV_AUTHEN_TOKEN"]);
         list($decoded_username, $decoded_password) = getUsernamePassFromToken();
+        // dd($decoded_password);
+        // dd(getUsernamePassFromToken());
         $sqlId = "SELECT username, `password` FROM user_login WHERE username = '$decoded_username'";
         $resultId = $pdo->query($sqlId);
         $result = $resultId->fetchAll(PDO::FETCH_ASSOC);
         if (!(count($result) == 1 && $result[0]['password'] == $decoded_password)) {
             header("HTTP/1.1 401 Unauthen");
-            echo "Authen Failed";
+            echo json_encode(array("message" => "Authen Failed"));
             exit;
         }
     } else {
 
         header("HTTP/1.1 401 Unauthen");
-        echo "Unauthen";
+        echo json_encode(array("message" => "Unauthen"));
         exit;
     }
 }

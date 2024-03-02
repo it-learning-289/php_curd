@@ -18,7 +18,7 @@ $apiMap = [
 $method = strtolower($_SERVER['REQUEST_METHOD']);
 // dd($method);
 $request = explode("/", $_SERVER["PATH_INFO"]);
-// dd($request[2]);
+// dd($request);
 // dd(explode("/", "/shoes\/(\d.*)/delete")[1]);
 foreach ($apiMap as $key => $value) {
     //   d( explode("/", $key)[1] ." " .explode("/", $key)[3]);
@@ -26,12 +26,28 @@ foreach ($apiMap as $key => $value) {
     if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[2])) {
         // dd(explode("@", $value["path"])); 
         $temp = explode("@", $value["path"])[0];
-        // dd($temp);
-        require_once $temp;
-        exit;
+        if ($value["checkAuthen"] === false) {
+            require_once $temp;
+            exit;
+        } else {
+            checkAuthForApi();
+            $decoded_username = getUsernamePassFromToken()[0];
+            if (!limitPermition($decoded_username, $key)) {
+                echo json_encode(array("message" => "not allow"));
+                exit;
+            }
+            require_once $temp;
+            exit;
+        }
     } else if (($request[2] === substr(explode("/", $key)[1], 0, -1)) && ($method === explode("/", $key)[3])) {
         // dd(explode("@", $value["path"])); 
         $temp = explode("@", $value["path"])[0];
+        checkAuthForApi();
+        $decoded_username = getUsernamePassFromToken()[0];
+        if (!limitPermition($decoded_username, $key)) {
+            echo json_encode(array("message" => "not allow"));
+            exit;
+        }
         // dd($temp);
         require_once $temp;
         exit;
