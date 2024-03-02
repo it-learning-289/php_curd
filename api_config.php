@@ -13,7 +13,8 @@ $apiMap = [
     "/cars/get" =>  ["path" => "./modules/car/get.php@getTokenAuth"],
     "/shoes\/(\d.*)/delete" => ["path" => "./modules/shoe/delete.php@getTokenAuth"],
     "/shoes/get" =>  ["path" => "./modules/shoe/get.php@shoeGet"],
-    "/shoes/post" =>  ["path" => "./modules/shoe/post.php@a"]
+    "/shoes/post" =>  ["path" => "./modules/shoe/post.php@a"],
+    "/roles/get" =>  ["path" => "./modules/role/getRole.php@a"]
 ];
 $method = strtolower($_SERVER['REQUEST_METHOD']);
 // dd($method);
