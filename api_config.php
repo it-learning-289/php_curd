@@ -16,9 +16,10 @@ $apiMap = [
     "/shoes/{id}/delete" => ["path" => "./modules/shoe/delete.php@getTokenAuth"],
     "/shoes/get" =>  ["path" => "./modules/shoe/get.php@shoeGet"],
     "/shoes/post" =>  ["path" => "./modules/shoe/post.php@a"],
-    "/roles/get" =>  ["path" => "./modules/role/getRole.php@a"],
     "/roles/post" =>  ["path" => "./modules/role/postRole.php@a"],
-    "/roles/delete" =>  ["path" => "./modules/role/deleteRole.php@a"]
+    "/roles/delete" =>  ["path" => "./modules/role/deleteRole.php@a"],
+    "/roles/get_user_roles/get" =>  ["path" => "./modules/role/get_user_roles.php@a"],
+    "/roles/get" =>  ["path" => "./modules/role/getRole.php@a"]
 ];
 $method = strtolower($_SERVER['REQUEST_METHOD']);
 // dd($method);
@@ -29,32 +30,35 @@ foreach ($apiMap as $key => $value) {
     //   d( explode("/", $key)[1] ." " .explode("/", $key)[2]);
     // d($key);
     //  dd(explode("/", "/cars/{id}/delete"));
-    
+
     if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[2])) {
+     
+        // dd(explode("/", "get_user_roles"));
         // dd(explode("@", $value["path"])); 
         $temp = explode("@", $value["path"])[0];
-        
         if ($value["checkAuthen"] === false) {
             require_once $temp;
             exit;
         } else {
             checkAuthForApi();
             $decoded_username = getUsernamePassFromToken()[0];
-            // dd($key);
-            if (!limitPermition($decoded_username,$key)) {
+            
+            if (!limitPermition($decoded_username, $key)) {
                 echo json_encode(array("message" => "not allow"));
                 exit;
             }
             require_once $temp;
-            exit;
+            // exit;
         }
-    } else  if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[3])) {
+    } else  if (($request[2] === explode("/", $key)[1]) && (($method === explode("/", $key)[3]) || ($method === explode("/", $key)[4]))) {
         // dd(explode("@", $value["path"])); 
         // dd("explode("/", $key)");
+        // d($request);
         $temp = explode("@", $value["path"])[0];
         checkAuthForApi();
         $decoded_username = getUsernamePassFromToken()[0];
-        if (!limitPermition($decoded_username,$key)) {
+        if (!limitPermition($decoded_username, $key)) {
+            // dd($key);
             echo json_encode(array("message" => "not allow"));
             exit;
         }
@@ -63,7 +67,6 @@ foreach ($apiMap as $key => $value) {
         require_once $temp;
         exit;
     }
-   
 }
 
-die();
+// die();
