@@ -8,7 +8,22 @@ try {
     //    dd($roles);
     $role = implode(",", $roles);
     // dd($role);
-    $stmt = $pdo->prepare("UPDATE user_login SET role = :role WHERE username = :username");
+    $sql = "SELECT role FROM user_login  WHERE username = '$username' ";
+    $result = $pdo->query($sql);
+    $result = $result->fetchAll(PDO::FETCH_ASSOC);
+    // dd($result);
+    // foreach($result as $value) {
+    //     // $newRole = implode(",", $value['role']);
+    //     d($value['role']);
+    // }
+    $newRole = $result[0]['role'];
+    // dd($newRole);
+    if($newRole==="") {
+        $stmt  = $pdo->prepare("UPDATE user_login SET role = :role WHERE username = :username");
+    }
+    else {
+        $stmt  = $pdo->prepare("UPDATE user_login SET role = '$newRole' + ',' + :role WHERE username = :username");
+    }
     // Bind parameters
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':role', $role);

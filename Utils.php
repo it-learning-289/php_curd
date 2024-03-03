@@ -1,4 +1,5 @@
 <?php
+
 // var_dump($module1);
 // die();
 
@@ -9,26 +10,14 @@ function checkModuleExits($x, $array)
     }
     return false;
 }
-function limitPermition($username, $module)
+function limitPermition($username,$api)
 {
     global $pdo;
-    $sql = "SELECT username, `role` FROM user_login";
+    $sql = "SELECT user_login.id, user_login.username , roles.role, roles.name_role FROM user_login inner JOIN user_role ON user_login.id = user_role.user_id inner JOIN roles ON roles.id= user_role.role_id where user_login.username ='$username' and  roles.role= '$api'";
     $result = $pdo->query($sql);
-    $result = $result->fetchAll(PDO::FETCH_ASSOC);
-    $arrAuthPermit = [];
-    foreach ($result as $value) {
-        // d($result[$key]["username"]);
-        // d($result[$key]["role"]);
-        $arrAuthPermit[$value["username"]] = explode(",", $value["role"]);
-    }
-    // dd($arrAuthPermit);
-    foreach ($arrAuthPermit as $key => $value) {
-        // dd($value);
-        if ($username === $key && in_array($module, $value)) {
-            return true;
-        }
-    }
-    return false;
+    $result = $result->fetch(PDO::FETCH_ASSOC);
+    // dd($api);
+    return $result;
 }
 
 function getUsernamePassFromToken()
