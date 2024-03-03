@@ -14,7 +14,8 @@ $apiMap = [
     "/shoes\/(\d.*)/delete" => ["path" => "./modules/shoe/delete.php@getTokenAuth"],
     "/shoes/get" =>  ["path" => "./modules/shoe/get.php@shoeGet"],
     "/shoes/post" =>  ["path" => "./modules/shoe/post.php@a"],
-    "/roles/get" =>  ["path" => "./modules/role/getRole.php@a"]
+    "/roles/get" =>  ["path" => "./modules/role/getRole.php@a"],
+    "/roles/post" =>  ["path" => "./modules/role/postRole.php@a"]
 ];
 $method = strtolower($_SERVER['REQUEST_METHOD']);
 // dd($method);
@@ -24,6 +25,7 @@ $request = explode("/", $_SERVER["PATH_INFO"]);
 foreach ($apiMap as $key => $value) {
     //   d( explode("/", $key)[1] ." " .explode("/", $key)[3]);
     // d($key);
+
     if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[2])) {
         // dd(explode("@", $value["path"])); 
         $temp = explode("@", $value["path"])[0];

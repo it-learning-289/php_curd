@@ -1,7 +1,7 @@
 <?php
 global $pdo;
 if ($_GET['page'] != "") {
-    $limit = 10; // Number of records per page
+    $limit = 5; // Number of records per page
     // Get page numfber from the request, default to page 1
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
     $start = ($page - 1) * $limit;
@@ -12,7 +12,7 @@ if ($_GET['page'] != "") {
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $arrAuthPermit = [];
     foreach ($users as $value) {
-     
+
         if (!($value["role"] === "")) {
             $arrAuthPermit[$value["username"]] = explode(",", $value["role"]);
         } else {
