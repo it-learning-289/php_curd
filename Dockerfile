@@ -1,6 +1,9 @@
 # Use the official PHP image as the base image
 FROM php:7.4
 
+# install mysql driver docker image
+RUN docker-php-ext-install
+
 # Set the working directory within the container
 WORKDIR /var/www/html
 
