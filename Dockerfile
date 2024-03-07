@@ -2,7 +2,7 @@
 FROM php:7.4
 
 # install mysql driver docker image
-RUN docker-php-ext-install
+RUN docker-php-ext-installb mysqli
 
 # Set the working directory within the container
 WORKDIR /var/www/html
