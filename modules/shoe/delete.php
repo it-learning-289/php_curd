@@ -1,7 +1,9 @@
 <?php
+
 $pathInfoArr1 = explode("/", $_SERVER["PATH_INFO"]);
-// var_dump(1);
+// var_dump();
 // die();
+// dd("ahfvasdvsa");
 
 if ($pathInfoArr1[2] = 'shoes') {
     $module = $pathInfoArr1[3];
