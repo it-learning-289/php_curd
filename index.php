@@ -1,6 +1,8 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 
+
+echo "djfdlsfjdsl"; die();
 //DEBUG
 function dd($var)
 {
