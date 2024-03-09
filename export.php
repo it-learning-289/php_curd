@@ -13,7 +13,6 @@ if ($fp) {
     //put header of table : id, name,price,categories
     fputcsv($fp, array_keys($data[0]));
     // dd(($data[0]));
-
     // write data on file CSV 
     foreach ($data as $row) {
         fputcsv($fp, $row);

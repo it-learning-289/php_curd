@@ -1,7 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 
-
 //DEBUG
 function dd($var)
 {
