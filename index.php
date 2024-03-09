@@ -2,7 +2,6 @@
 error_reporting(E_ERROR | E_PARSE);
 
 
-echo "djfdlsfjdsl"; die();
 //DEBUG
 function dd($var)
 {
@@ -23,7 +22,8 @@ require_once'./Dev_Tung.php';
 // // Kiểm tra phương thức HTTP
 // var_dump($_SERVER);
 // die();
-
+require_once './export.php';
+die();
 require_once './Utils.php';
 require_once './api_config.php';
 // $method = $_SERVER['REQUEST_METHOD'];
