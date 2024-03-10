@@ -38,14 +38,24 @@ foreach ($apiMap as $key => $value) {
             exit;
         } else {
             checkAuthForApi();
-            $decoded_username = getUsernamePassFromToken()[0];
-
-            if (!limitPermition($decoded_username, $key)) {
+            // dd($key);
+            $author = new Author($key);
+            list($decoded_username, $decoded_password) = getUsernamePassFromToken();
+            if (!$author->checkPermission($decoded_username)) {
                 echo json_encode(array("message" => "not allow"));
                 exit;
             }
+
+            // $decoded_username = getUsernamePassFromToken()[0];
+
+            // if (!limitPermition($decoded_username, $key)) {
+            //     echo json_encode(array("message" => "not allow"));
+            //     exit;
+            // }
+            // dd($temp);
             require_once $temp;
             exit;
+
         }
     } else  if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[3])) {
         // dd(explode("@", $value["path"])); 
@@ -59,7 +69,7 @@ foreach ($apiMap as $key => $value) {
                 echo json_encode(array("message" => "not allow"));
                 exit;
             }
-            $temp = "./modules/role/".$request[3].".php";
+            $temp = "./modules/role/" . $request[3] . ".php";
             // dd($temp);
             require_once $temp;
             exit;

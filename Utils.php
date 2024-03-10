@@ -1,5 +1,5 @@
 <?php
-
+require_once "./authen_author.php";
 // var_dump($module1);
 // die();
 
@@ -10,10 +10,10 @@ function checkModuleExits($x, $array)
     }
     return false;
 }
-function limitPermition($username,$api)
+function limitPermition($username, $api)
 {
     global $pdo;
-    
+
     $sql = "SELECT user_login.id, user_login.username , roles.role, roles.name_role FROM user_login inner JOIN user_role ON user_login.id = user_role.user_id inner JOIN roles ON roles.id= user_role.role_id where user_login.username ='$username' and  roles.role= '$api'";
     $result = $pdo->query($sql);
     $result = $result->fetch(PDO::FETCH_ASSOC);
@@ -31,25 +31,33 @@ function getUsernamePassFromToken()
 }
 function checkAuthForApi()
 {
-    global $pdo;
     if (array_key_exists("HTTP_TUNGTV_AUTHEN_TOKEN", $_SERVER)) {
-        // $tungtvAuthTokenDecode = base64_decode($_SERVER["HTTP_TUNGTV_AUTHEN_TOKEN"]);
+  
+        // // $tungtvAuthTokenDecode = base64_decode($_SERVER["HTTP_TUNGTV_AUTHEN_TOKEN"]);
         // list($decoded_username, $decoded_password) = explode(':', $tungtvAuthTokenDecode);
-        // dd(base64_decode("dGllbl9kZXZ2OmFzZmRzZ3NkZmho"));
-        // dd($_SERVER["HTTP_TUNGTV_AUTHEN_TOKEN"]);
+        // // dd(base64_decode("dGllbl9kZXZ2OmFzZmRzZ3NkZmho"));
+        // // dd($_SERVER["HTTP_TUNGTV_AUTHEN_TOKEN"]);
+        // // dd($decoded_password);
+        // // dd(getUsernamePassFromToken());
+        // $sqlId = "SELECT username, `password` FROM user_login WHERE username = '$decoded_username'";
+        // $resultId = $pdo->query($sqlId);
+        // $result = $resultId->fetchAll(PDO::FETCH_ASSOC);
+        // if (!(count($result) == 1 && $result[0]['password'] == $decoded_password)) {
+        //     header("HTTP/1.1 401 Unauthen");
+        //     echo json_encode(array("message" => "Authen Failed"));
+        //     exit;
+        // }
+
         list($decoded_username, $decoded_password) = getUsernamePassFromToken();
-        // dd($decoded_password);
-        // dd(getUsernamePassFromToken());
-        $sqlId = "SELECT username, `password` FROM user_login WHERE username = '$decoded_username'";
-        $resultId = $pdo->query($sqlId);
-        $result = $resultId->fetchAll(PDO::FETCH_ASSOC);
-        if (!(count($result) == 1 && $result[0]['password'] == $decoded_password)) {
+        $authen = new Authen($decoded_username, $decoded_password);
+        // Authenticate the user
+        if (!$authen->authenticate()) {
             header("HTTP/1.1 401 Unauthen");
             echo json_encode(array("message" => "Authen Failed"));
             exit;
         }
     } else {
-
+        // dd("anh chao");
         header("HTTP/1.1 401 Unauthen");
         echo json_encode(array("message" => "Unauthen"));
         exit;

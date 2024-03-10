@@ -17,13 +17,14 @@ function d($var)
 //FOR DEV_TUNG
 require_once './Dev_Tung.php';
 
+
 //MAIN:
 // require_once '/Users/trantung/tien_dev/php_curd/modules/export_import/export.php';
-require_once './export.php';
+// require_once './export.php';
 // export("shoes");
 // require_once "./import.php";
-export("shoes");
-die();
+// export("shoes");
+// die();
 require_once './Utils.php';
 require_once './api_config.php';
 
