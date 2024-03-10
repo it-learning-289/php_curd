@@ -2,6 +2,7 @@
 function shoeGet()
 {
     global $pdo;
+    // dd("anh chao em");
     //SEARCH name
     // $searchField = isset($_GET['action']) && $_GET['action'] === 'search' ? 'name' : '';
     // $searchTerm = isset($_GET[$searchField]) ? $_GET[$searchField] : '';
@@ -103,3 +104,4 @@ function shoeGet()
     //         //     echo $json;
     //         // }
 }
+shoeGet();

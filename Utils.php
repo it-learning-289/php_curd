@@ -113,7 +113,6 @@ function listSubDir($dir)
     foreach ($subdirs as $subdir) {
         $item =  explode("/", $subdir);
         $arrModule[] = $item[2];
-        // d($item[2]);
         $rs[] = str_replace($dir . "/", "", $subdir);
     }
     // d(substr($moduleFromApi, 0, strlen($moduleFromApi) - 1));

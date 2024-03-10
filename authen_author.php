@@ -1,6 +1,4 @@
 <?php
-
-
 class Authen
 {
     private $username;
@@ -26,7 +24,6 @@ class Authen
         return true;
     }
 }
-
 
 //AUTHOR
 class Author

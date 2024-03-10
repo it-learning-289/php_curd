@@ -63,9 +63,17 @@ foreach ($apiMap as $key => $value) {
         $arrGetRole_User = ["get_user_roles", "get_role_users"];
         // dd($request[3]);
         if (in_array($request[3], $arrGetRole_User)) {
+            // checkAuthForApi();
+            // $decoded_username = getUsernamePassFromToken()[0];
+            // if (!limitPermition($decoded_username, $key)) {
+            //     echo json_encode(array("message" => "not allow"));
+            //     exit;
+            // }
             checkAuthForApi();
-            $decoded_username = getUsernamePassFromToken()[0];
-            if (!limitPermition($decoded_username, $key)) {
+            // dd($key);
+            $author = new Author($key);
+            list($decoded_username, $decoded_password) = getUsernamePassFromToken();
+            if (!$author->checkPermission($decoded_username)) {
                 echo json_encode(array("message" => "not allow"));
                 exit;
             }
@@ -75,10 +83,18 @@ foreach ($apiMap as $key => $value) {
             exit;
         } else {
             $temp = explode("@", $value["path"])[0];
+            // checkAuthForApi();
+            // $decoded_username = getUsernamePassFromToken()[0];
+            // if (!limitPermition($decoded_username, $key)) {
+            //     // dd($key);
+            //     echo json_encode(array("message" => "not allow"));
+            //     exit;
+            // }
             checkAuthForApi();
-            $decoded_username = getUsernamePassFromToken()[0];
-            if (!limitPermition($decoded_username, $key)) {
-                // dd($key);
+            // dd($key);
+            $author = new Author($key);
+            list($decoded_username, $decoded_password) = getUsernamePassFromToken();
+            if (!$author->checkPermission($decoded_username)) {
                 echo json_encode(array("message" => "not allow"));
                 exit;
             }
