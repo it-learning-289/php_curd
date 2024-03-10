@@ -1,6 +1,13 @@
 <?php
+<<<<<<< HEAD
 class Authen
 {
+=======
+//Authen
+class Authen
+{
+    
+>>>>>>> 9a1db96 (dev_tien testing class author)
     private $username;
     private $password;
 
@@ -13,10 +20,25 @@ class Authen
     public function authenticate()
     {
         global $pdo;
+<<<<<<< HEAD
+=======
+        // Simulate authentication, you would normally check in a database
+        // $validUsernames = ['user1', 'user2', 'user3'];
+        // $validPasswords = ['pass1', 'pass2', 'pass3'];
+
+        // if (in_array($this->username, $validUsernames) && in_array($this->password, $validPasswords)) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+
+        //test
+>>>>>>> 9a1db96 (dev_tien testing class author)
         $sqlId = "SELECT username, `password` FROM user_login WHERE username = '$this->username'";
         $resultId = $pdo->query($sqlId);
         $result = $resultId->fetchAll(PDO::FETCH_ASSOC);
         if (!(count($result) == 1 && $result[0]['password'] == $this->password)) {
+<<<<<<< HEAD
             // header("HTTP/1.1 401 Unauthen");
             // echo json_encode(array("message" => "Authen Failed"));
             return false;
@@ -46,3 +68,28 @@ class Author
         return $result;
     }
 }
+=======
+            header("HTTP/1.1 401 Unauthen");
+            echo json_encode(array("message" => "Authen Failed"));
+            exit;
+        }
+    }
+}
+
+//Author
+class Author {
+    private $role;
+    public function __construct($role) {
+        $this->role = $role;
+    }
+
+    public function checkPermission($requiredRole) {
+        if ($this->role === $requiredRole) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+>>>>>>> 9a1db96 (dev_tien testing class author)

@@ -13,9 +13,16 @@ function d($var)
 }
 
 // FOR DEV_TIEN
+<<<<<<< HEAD
 // require_once './Dev_Tien.php';
 //FOR DEV_TUNG
 require_once './Dev_Tung.php';
+=======
+require_once './Dev_Tien.php';
+
+//FOR DEV_TUNG
+// require_once'./Dev_Tung.php';
+>>>>>>> 9a1db96 (dev_tien testing class author)
 
 
 //MAIN:
@@ -25,6 +32,11 @@ require_once './Dev_Tung.php';
 // require_once "./import.php";
 // export("shoes");
 // die();
+<<<<<<< HEAD
+=======
+require_once "./test.php";
+die();
+>>>>>>> 9a1db96 (dev_tien testing class author)
 require_once './Utils.php';
 require_once './api_config.php';
 
