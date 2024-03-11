@@ -38,7 +38,6 @@ foreach ($apiMap as $key => $value) {
             exit;
         } else {
             checkAuthForApi();
-<<<<<<< HEAD
             // dd($key);
             $author = new Author($key);
             list($decoded_username, $decoded_password) = getUsernamePassFromToken();
@@ -49,41 +48,11 @@ foreach ($apiMap as $key => $value) {
 
             // $decoded_username = getUsernamePassFromToken()[0];
 
-=======
-            // $decoded_username = getUsernamePassFromToken()[0];
-            list($decoded_username, $decoded_password) = getUsernamePassFromToken();
-            
-            //TEST
-            // Create an instance of Authen
-            $authen = new Authen($decoded_username, $decoded_password);
-            if ($authen->authenticate()) {
-                echo "Authentication successful.<br>";
-            
-                // Create an instance of Author
-                $author = new Author('admin');
-            
-                // Check permission
-                if ($author->checkPermission($key)) {
-                    echo "Authorization granted for admin role.<br>";
-                } else {
-                    echo "Authorization denied for admin role.<br>";
-                    exit;
-                }
-            } else {
-                echo "Authentication failed.<br>";
-                exit;
-            }
-
->>>>>>> 9a1db96 (dev_tien testing class author)
             // if (!limitPermition($decoded_username, $key)) {
             //     echo json_encode(array("message" => "not allow"));
             //     exit;
             // }
-<<<<<<< HEAD
             // dd($temp);
-=======
-
->>>>>>> 9a1db96 (dev_tien testing class author)
             require_once $temp;
             exit;
 
