@@ -60,7 +60,7 @@ class ApiRouter {
 }
 
 // Sử dụng class ApiRouter
-require_once "./Dev_Tien.php"; // Include file chứa kết nối PDO
+require_once "./connectMysql/Dev_Tien.php"; // Include file chứa kết nối PDO
 
 $apiMap = [
     "/register/post" => [

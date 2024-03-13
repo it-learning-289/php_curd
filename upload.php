@@ -5,7 +5,6 @@ class UploadAndImport {
     public function __construct($targetDir) {
         $this->targetDir = $targetDir;
     }
-
     public function handleUploadAndImport() {
         // Xóa tất cả các file trong thư mục uploads trước khi upload
         $this->clearUploadsDirectory();
@@ -48,7 +47,6 @@ class UploadAndImport {
         }
     }
 }
-
 // Sử dụng class UploadAndImport
 $uploader = new UploadAndImport("uploads/");
 $uploader->handleUploadAndImport();

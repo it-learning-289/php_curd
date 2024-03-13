@@ -1,6 +1,4 @@
 <?php
-function shoeGet()
-{
     global $pdo;
     // dd("anh chao em");
     //SEARCH name
@@ -103,5 +101,3 @@ function shoeGet()
     //         //     $json = json_encode($data, JSON_PRETTY_PRINT);
     //         //     echo $json;
     //         // }
-}
-shoeGet();

@@ -1,12 +1,15 @@
 <?php
-class UserRegistration {
+class UserRegistration
+{
     private $pdo;
 
-    public function __construct($pdo) {
+    public function __construct($pdo)
+    {
         $this->pdo = $pdo;
     }
 
-    public function registerUser() {
+    public function registerUser()
+    {
         try {
             $data = json_decode(file_get_contents("php://input"), true);
 
@@ -45,4 +48,3 @@ require_once "./connectMysql/Dev_Tien.php"; // Include file chứa kết nối P
 
 $userRegistration = new UserRegistration($pdo);
 // $userRegistration->registerUser();
-?>
