@@ -12,9 +12,9 @@ function d($var)
     var_dump($var);
 }
 // FOR DEV_TIEN
-require_once './Dev_Tien.php';
+require_once '.\connectMysql\Dev_Tien.php';
 //FOR DEV_TUNG
-// require_once './Dev_Tung.php';
+// require_once '.\connectMysql\Dev_Tung.php';
 //MAIN:
 // require_once("./import.php");
 require_once './Utils.php';
