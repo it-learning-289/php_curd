@@ -10,6 +10,7 @@ class ApiRouter {
 
     public function routeApi() {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
+        // dd($method);
         $request = explode("/", $_SERVER["PATH_INFO"]);
         $apiHandler = new ApiHandler($this->pdo);
 
@@ -59,9 +60,7 @@ class ApiRouter {
     }
 }
 
-// Sử dụng class ApiRouter
-require_once "./connectMysql/Dev_Tien.php"; // Include file chứa kết nối PDO
-
+global $pdo;
 $apiMap = [
     "/register/post" => [
         "path" => "./register.php@register",
@@ -84,7 +83,7 @@ $apiMap = [
     "/roles/get_role_users/get" =>  ["path" => "./modules/role/get_role_users.php@a"],
     "/roles/get" =>  ["path" => "./modules/role/getRole.php@a"]
 ];
-
+dd("asdv");
 $apiRouter = new ApiRouter($apiMap, $pdo);
 $apiRouter->routeApi();
 ?>

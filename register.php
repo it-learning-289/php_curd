@@ -1,4 +1,5 @@
 <?php
+
 class UserRegistration
 {
     private $pdo;
@@ -42,9 +43,6 @@ class UserRegistration
         }
     }
 }
-
-// Sử dụng class UserRegistration
-require_once "./connectMysql/Dev_Tien.php"; // Include file chứa kết nối PDO
-
+global $pdo;
 $userRegistration = new UserRegistration($pdo);
-// $userRegistration->registerUser();
+$userRegistration->registerUser();

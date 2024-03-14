@@ -1,4 +1,7 @@
 <?php
+
+echo "dsfv";
+die();
 class AuthTokenGenerator {
     private $pdo;
 
@@ -28,10 +31,7 @@ class AuthTokenGenerator {
         }
     }
 }
-
-// Sử dụng class AuthTokenGenerator
-require_once "./connect/Dev_Tien.php"; // Include file chứa kết nối PDO
-
+global $pdo;
 $authTokenGenerator = new AuthTokenGenerator($pdo);
-// $authTokenGenerator->generateAuthToken();
+$authTokenGenerator->generateAuthToken();
 ?>
