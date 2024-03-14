@@ -1,7 +1,6 @@
 <?php
 
-echo "dsfv";
-die();
+
 class AuthTokenGenerator {
     private $pdo;
 

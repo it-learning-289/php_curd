@@ -12,10 +12,13 @@ class ApiRouter {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         // dd($method);
         $request = explode("/", $_SERVER["PATH_INFO"]);
+        // dd($request[2]);
         $apiHandler = new ApiHandler($this->pdo);
 
         foreach ($this->apiMap as $key => $value) {
             $author = new Author($key);
+
+            $shoesManager = new ShoesManager($this->pdo);
 
             if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[2])) {
                 $temp = explode("@", $value["path"])[0];
@@ -29,6 +32,7 @@ class ApiRouter {
                         echo json_encode(array("message" => "not allow"));
                         exit;
                     }
+                    // dd($temp);                    
                     require_once $temp;
                     exit;
                 }
@@ -75,7 +79,7 @@ $apiMap = [
     "/cars/{id}/patch" =>  ["path" => "./modules/car/patch.php@getTokenAuth"],
     "/cars/{id}/put" =>  ["path" => "./modules/car/put.php@getTokenAuth"],
     "/shoes/{id}/delete" => ["path" => "./modules/shoe/delete.php@getTokenAuth"],
-    "/shoes/get" =>  ["path" => "./modules/shoe/get.php@shoeGet"],
+    "/shoes/get" =>  ["path" => "./modules/shoe/shoe_manage.php"],
     "/shoes/post" =>  ["path" => "./modules/shoe/post.php@a"],
     "/roles/post" =>  ["path" => "./modules/role/postRole.php@a"],
     "/roles/delete" =>  ["path" => "./modules/role/deleteRole.php@a"],
@@ -83,7 +87,7 @@ $apiMap = [
     "/roles/get_role_users/get" =>  ["path" => "./modules/role/get_role_users.php@a"],
     "/roles/get" =>  ["path" => "./modules/role/getRole.php@a"]
 ];
-dd("asdv");
+// dd("asdv");
 $apiRouter = new ApiRouter($apiMap, $pdo);
 $apiRouter->routeApi();
 ?>

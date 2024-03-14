@@ -1,6 +1,6 @@
 <?php
     try {
-       dd("put cars");
+    //   dd("put cars");
     // die();
         $pathInfoArr1 = explode("/", $_SERVER["PATH_INFO"]);
     
