@@ -1,6 +1,6 @@
 <?php
 
-class UserRoleManager {
+class RoleUsersManager {
     private $pdo;
 
     public function __construct($pdo) {

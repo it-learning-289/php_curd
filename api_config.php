@@ -18,15 +18,15 @@ class ApiRouter
         // dd($request[2]);
         $apiHandler = new ApiHandler($this->pdo);
         foreach ($this->apiMap as $key => $value) {
-            
-          
-            list($path, $class_function)  = explode("@", $value["path"]);
-            list($class, $nameFunction) = explode("/", $class_function);
+
+
+
+
             list($decoded_username, $decoded_password) = $apiHandler->getUsernamePassFromToken();
 
             if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[2])) {
                 if ($value["checkAuthen"] === false) {
-                   
+
                     $temp = explode("@", $value['path'])[0];
                     // dd($temp);
                     require_once $temp;
@@ -34,6 +34,8 @@ class ApiRouter
                 } else {
                     $apiHandler->checkAuthForApi();
                     $author = new Author($key);
+                    list($path, $class_function)  = explode("@", $value["path"]);
+                    list($class, $nameFunction) = explode("/", $class_function);
                     if (!$author->checkPermission($decoded_username)) {
                         echo json_encode(array("message" => "not allow"));
                         exit;
@@ -48,29 +50,28 @@ class ApiRouter
             } else if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[3])) {
                 // dd($request[3]);
                 $arrGetRole_User = ["get_user_roles", "get_role_users"];
-                $role = "/roles/" .$request[3]."/get";
+                $role = "/roles/" . $request[3] . "/get";
                 $author = new Author($role);
+                // dd($role);
+                list($path, $class_function)  = explode("@", $this->apiMap[$role]["path"]);
+                list($class, $nameFunction) = explode("/", $class_function);
                 // dd(explode("/", $key));
                 if (in_array($request[3], $arrGetRole_User)) {
                     $apiHandler->checkAuthForApi();
                     // dd($decoded_username);
-                   
+
                     if (!$author->checkPermission($decoded_username)) {
-                       
+
                         echo json_encode(array("message" => "not allow"));
                         exit;
                     }
-                    // $temp = "./modules/role/" . $request[3] . ".php";
-                    // require_once $temp;
+                    // dd($nameFunction);
                     call_user_func(array(new $class($this->pdo), $nameFunction));
                     exit;
                 } else {
                     $apiHandler->checkAuthForApi();
                     // dd($decoded_username);
-
                     if (!$author->checkPermission($decoded_username)) {
-
-                  
                         echo json_encode(array("message" => "not allow"));
                         exit;
                     }
@@ -103,7 +104,7 @@ $apiMap = [
     "/roles/post" =>  ["path" =>  "./modules/role/role_manage.php@sRoleManager/postRole"],
     "/roles/get_user_roles/get" =>  ["path" => "./modules/role/role_manage.php@RoleManager/getUserRolesByPage"],
     "/roles/get_role_users/get" =>  ["path" => "./modules/role/role_manage.php@RoleManager/getRoleUsersByPage"]
-    
+
 
 ];
 // dd("asdv");
