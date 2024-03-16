@@ -30,7 +30,7 @@ class AuthTokenGenerator {
         }
     }
 }
-global $pdo;
+
 $authTokenGenerator = new AuthTokenGenerator($pdo);
 $authTokenGenerator->generateAuthToken();
 ?>

@@ -1,5 +1,5 @@
 <?php
-class ShoesManager
+class CarsManager
 {
     private $pdo;
 
@@ -7,14 +7,14 @@ class ShoesManager
     {
         $this->pdo = $pdo;
     }
-    public function getShoes()
+    public function getCars()
     {
         $pathInfoArr1 = explode("/", $_SERVER["PATH_INFO"]);
         if ($pathInfoArr1[2] = 'shoes') {
             $module = $pathInfoArr1[3];
             // var_dump($pathInfoArr1[3]);
             // var_dump($module);
-            $sqlId = "SELECT * FROM shoes WHERE id = '$module'";
+            $sqlId = "SELECT * FROM cars WHERE id = '$module'";
             $resultId = $this->pdo->query($sqlId);
             $searchIdd = $resultId->fetchAll(PDO::FETCH_ASSOC);
             if (is_null($searchIdd[0])) {
@@ -24,26 +24,26 @@ class ShoesManager
             echo json_encode($searchIdd[0]);
         }
     }
-    public function postShoe()
+    public function postCar()
     {
         try {
             $pathInfoArr1 = explode("/", $_SERVER["PATH_INFO"]);
 
             $module = $pathInfoArr1[2];
-            if ($module = "shoes") {
+            if ($module = "cars") {
 
                 $data = json_decode(file_get_contents("php://input"), true);
                 $name = $data['name'];
                 $price = $data['price'];
-                $categories = $data['category'];
+              
 
                 // Prepare the SQL statement
-                $stmt = $this->pdo->prepare("INSERT INTO shoes (name, price, categories) VALUES (:name, :price, :category)");
+                $stmt = $this->pdo->prepare("INSERT INTO cars (name, price, categories) VALUES (:name, :price)");
 
                 // Bind parameters
                 $stmt->bindParam(':name', $name);
                 $stmt->bindParam(':price', $price);
-                $stmt->bindParam(':category', $categories);
+               
 
                 // Execute the statement
                 $stmt->execute();
@@ -64,13 +64,13 @@ class ShoesManager
             echo json_encode(array("message" => "Database error: " . $e->getMessage()));
         }
     }
-    public function delShoe()
+    public function delCar()
     {
         $pathInfoArr1 = explode("/", $_SERVER["PATH_INFO"]);
         if ($pathInfoArr1[2] = 'cars') {
             $module = $pathInfoArr1[3];
             // dd($module);
-            $stmt = $this->pdo->prepare("DELETE FROM shoes WHERE id = :id");
+            $stmt = $this->pdo->prepare("DELETE FROM cars WHERE id = :id");
 
             // Bind parameter
             $stmt->bindParam(':id', $module);
