@@ -1,6 +1,6 @@
 <?php
 // error_reporting(E_ERROR | E_PARSE);
-
+require_once "./log_message.php";
 // FOR DEV_TIEN
 // require_once '.\connectMysql\Dev_Tien.php';
 //FOR DEV_TUNG
