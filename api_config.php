@@ -16,7 +16,7 @@ class ApiRouter
         // dd($method);
         $request = explode("/", $_SERVER["PATH_INFO"]);
         // dd($request[2]);
-        // $apiHandler = new ApiHandler($this->pdo);
+        $apiHandler = new ApiHandler($this->pdo);
         foreach ($this->apiMap as $key => $value) {
             list($decoded_username, $decoded_password) = $apiHandler->getUsernamePassFromToken();
 

@@ -1,5 +1,4 @@
 <?php
-require './vendor/autoload.php';
 
 // use Monolog\Level;
 use Monolog\Logger;
