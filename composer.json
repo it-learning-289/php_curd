@@ -9,8 +9,7 @@
             "./modules/car/car_manage.php",
             "./modules/role/role_manage.php",
             "./Utils.php",
-            "./api_config.php",
-            "./export.php"
+            "./api_config.php"
         ]
     }
 }

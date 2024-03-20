@@ -1,6 +1,8 @@
 <?php
 
-
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 class AuthTokenGenerator {
     private $pdo;
 

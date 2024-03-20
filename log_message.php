@@ -1,4 +1,5 @@
 <?php
+require_once 'vendor/autoload.php'; // Gọi autoloader của Composer
 
 // use Monolog\Level;
 use Monolog\Logger;
