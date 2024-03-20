@@ -16,19 +16,19 @@ class ApiRouter
         // dd($method);
         $request = explode("/", $_SERVER["PATH_INFO"]);
         // dd($request[2]);
-        $apiHandler = new ApiHandler($this->pdo);
         foreach ($this->apiMap as $key => $value) {
-            list($decoded_username, $decoded_password) = $apiHandler->getUsernamePassFromToken();
 
+            list($decoded_username, $decoded_password) = ApiHandler::getUsernamePassFromToken();
             if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[2])) {
                 if ($value["checkAuthen"] === false) {
-
                     $temp = explode("@", $value['path'])[0];
+                    
                     // dd($temp);
                     require_once $temp;
                     exit;
                 } else {
-                    $apiHandler->checkAuthForApi();
+
+                    ApiHandler::checkAuthForApi();
                     $author = new Author($key);
                     list($path, $class_function)  = explode("@", $value["path"]);
                     list($class, $nameFunction) = explode("/", $class_function);
@@ -40,7 +40,6 @@ class ApiRouter
                     // dd($class);             
                     call_user_func(array(new $class($this->pdo), $nameFunction));
                     // echo $result;
-
                     exit;
                 }
             } else if (($request[2] === explode("/", $key)[1]) && ($method === explode("/", $key)[3])) {
@@ -53,9 +52,8 @@ class ApiRouter
                 list($class, $nameFunction) = explode("/", $class_function);
                 // dd(explode("/", $key));
                 if (in_array($request[3], $arrGetRole_User)) {
-                    $apiHandler->checkAuthForApi();
+                    ApiHandler::checkAuthForApi();
                     // dd($decoded_username);
-
                     if (!$author->checkPermission($decoded_username)) {
 
                         echo json_encode(array("message" => "not allow"));
@@ -65,7 +63,7 @@ class ApiRouter
                     call_user_func(array(new $class($this->pdo), $nameFunction));
                     exit;
                 } else {
-                    $apiHandler->checkAuthForApi();
+                    ApiHandler::checkAuthForApi();
                     // dd($decoded_username);
                     if (!$author->checkPermission($decoded_username)) {
                         echo json_encode(array("message" => "not allow"));
@@ -79,7 +77,7 @@ class ApiRouter
     }
 }
 
-// global $pdo;
+
 $apiMap = [
     "/register/post" => [
         "path" => "./register.php@register",
@@ -104,5 +102,6 @@ $apiMap = [
 
 ];
 // dd("asdv");
+global $pdo;
 $apiRouter = new ApiRouter($apiMap, $pdo);
 $apiRouter->routeApi();

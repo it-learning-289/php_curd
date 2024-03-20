@@ -3,23 +3,17 @@
 
 class ApiHandler
 {
-    private $pdo;
 
-    public function __construct($pdo)
-    {
-        $this->pdo = $pdo;
-    }
-
-    public function getUsernamePassFromToken()
+    public static function getUsernamePassFromToken()
     {
         $tungtvAuthTokenDecode = base64_decode($_SERVER["HTTP_TUNGTV_AUTHEN_TOKEN"]);
         return explode(':', $tungtvAuthTokenDecode);
     }
 
-    public function checkAuthForApi()
+    public static function checkAuthForApi()
     {
         if (array_key_exists("HTTP_TUNGTV_AUTHEN_TOKEN", $_SERVER)) {
-            list($decoded_username, $decoded_password) = $this->getUsernamePassFromToken();
+            list($decoded_username, $decoded_password) = self::getUsernamePassFromToken();
             $authen = new Authen($decoded_username, $decoded_password);
             // Authenticate the user
             if (!$authen->authenticate()) {
