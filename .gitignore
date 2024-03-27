@@ -4,3 +4,5 @@ shoes.json
 vendor/
 logs/
 uploads/
+composer.lock
+*.env
