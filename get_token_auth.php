@@ -23,7 +23,7 @@ class AuthTokenGenerator
             }
         } catch (Exception $e) {
             http_response_code(500); // Internal Server Error
-            $log = new CustomLogger('get_Authen_token', './logs/AuthToken.log', Logger::INFO);
+            $log = new CustomLogger('get_Authen_token', './logs/logs.log', Logger::INFO);
             $log->logError($e->getMessage());
             echo json_encode(array("message" => "Error: " . $e->getMessage()));
         }

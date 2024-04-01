@@ -1,8 +1,10 @@
 <?php
 require_once ".\connectMysql\mysqlMain.php";
+
+
 // Sử dụng class Database
 header('Content-Type: application/json');
-$host = '192.168.1.103:8306';
+$host = '192.168.1.102:8306';
 $dbname = 'tiendata';
 $username = 'root';
 $password = 'root';
