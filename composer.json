@@ -5,13 +5,8 @@
     },
     "autoload": {
         "files": [
-            "./logger.php",
-            "./authen_author.php",
-            "./modules/shoe/shoe_manage.php",
-            "./modules/car/car_manage.php",
-            "./modules/role/role_manage.php",
-            "./Utils.php",
-            "./api_config.php"
+            "./logger.php"
+       
         ]
     }
 }

@@ -1,11 +1,13 @@
 <?php
 require_once  "./connectMysql/mysqlMain.php";
-use Symfony\Component\Dotenv\Dotenv;
-require_once 'vendor/autoload.php';
 
-// Đường dẫn đến file .env (thường là thư mục gốc của ứng dụng)
+require_once __DIR__.'/vendor/autoload.php';
+
+use Symfony\Component\Dotenv\Dotenv;
+
 $dotenv = new Dotenv();
-$dotenv->load(__DIR__ . '/connectMysql/.env');
+$dotenv->load(__DIR__.'./connectMysql/.env');
+
 
 // Sử dụng các biến môi trường
 $dbHost = $_ENV['DEV_TUNG'];
