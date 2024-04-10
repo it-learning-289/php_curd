@@ -83,7 +83,7 @@ $apiMap = [
         "path" => "./register.php@register",
         "checkAuthen" => false
     ],
-    "/get_token_auth/get" => [
+    "/get_token_auth/post" => [
         "path" => "./get_token_auth.php@gettokenauth",
         "checkAuthen" => false
     ],
