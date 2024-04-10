@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
-
+header('Content-Type: application/json');
 
 // var_dump($pdo);
 
@@ -25,11 +25,16 @@ $password = $_ENV['DB_PASSWORD'];
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully";
-    
+    // echo "Connected successfully";
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
+
+global $pdo;
+require_once "./api_config.php";
+$apiMap = getApiConfig();
+$apiRouter = new ApiRouter($apiMap, $pdo);
+$apiRouter->routeApi();
 
 //  dd("Server Name: " . $serverName);
 // require_once "./connectMysql/Dev_Tien.php";
