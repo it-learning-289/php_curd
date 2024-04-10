@@ -6,4 +6,3 @@ logs/
 uploads/
 composer.lock
 *.env
-composer.lock
