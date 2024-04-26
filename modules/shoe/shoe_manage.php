@@ -9,19 +9,22 @@ class ShoesManager
     }
     public function getShoes()
     {
+
+        //get detail
         $pathInfoArr1 = explode("/", $_SERVER["PATH_INFO"]);
-        if ($pathInfoArr1[2] = 'shoes') {
+        if ($pathInfoArr1[2] = 'shoes' && is_null($pathInfoArr1[3])) {
             $module = $pathInfoArr1[3];
             // var_dump($pathInfoArr1[3]);
             // var_dump($module);
             $sqlId = "SELECT * FROM shoes WHERE id = '$module'";
             $resultId = $this->pdo->query($sqlId);
             $searchIdd = $resultId->fetchAll(PDO::FETCH_ASSOC);
-            if (is_null($searchIdd[0])) {
-                echo json_encode(array("message" => "null"));
-                exit;
-            }
             echo json_encode($searchIdd[0]);
+        } else {
+            $stmt = $this->pdo->query('SELECT * FROM shoes');
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $json = json_encode($data, JSON_PRETTY_PRINT);
+            echo $json;
         }
     }
     public function postShoe()
