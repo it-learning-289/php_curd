@@ -12,7 +12,8 @@ class ShoesManager
 
         //get detail
         $pathInfoArr1 = explode("/", $_SERVER["PATH_INFO"]);
-        if ($pathInfoArr1[2] = 'shoes' && is_null($pathInfoArr1[3])) {
+        // dd((empty($_GET['page'])));
+        if ($pathInfoArr1[2] = 'shoes' && empty($_GET['page'])&& is_numeric($pathInfoArr1[3])) { //is fixing is_numeric, show incorrect data
             $module = $pathInfoArr1[3];
             // var_dump($pathInfoArr1[3]);
             // var_dump($module);
@@ -20,6 +21,40 @@ class ShoesManager
             $resultId = $this->pdo->query($sqlId);
             $searchIdd = $resultId->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($searchIdd[0]);
+        }
+        //PAGINATION
+        else if ($_GET['page'] != "") {
+            $limit = 10; // Number of records per page
+            // Get page numfber from the request, default to page 1
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            $start = ($page - 1) * $limit;
+
+            // Query to fetch records for the current page
+            $stmt = $this->pdo->prepare("SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes INNER JOIN category   ON shoes.categories=category.id LIMIT :start, :limit");
+            $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // var_dump($users);
+
+            // Total number of records (for pagination)
+            $total_stmt = $this->pdo->query("SELECT COUNT(*)  from (SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes INNER JOIN category   ON shoes.categories=category.id) tmp");
+            $total_rows = $total_stmt->fetchColumn();
+            $total_pages = ceil($total_rows / $limit);
+
+            // Construct the API response
+            $response = [
+                'page' => $page,
+                'total_pages' => $total_pages,
+                'total_records' => $total_rows,
+                'users' => $users
+            ];
+
+            // Set headers to JSON
+
+            // Output JSON response
+            echo json_encode($response);
         } else {
             $stmt = $this->pdo->query('SELECT * FROM shoes');
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
