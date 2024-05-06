@@ -17,7 +17,7 @@ class ShoesManager
             $module = $pathInfoArr1[3];
             // var_dump($pathInfoArr1[3]);
             // var_dump($module);
-            $sqlId = "SELECT * FROM shoes WHERE id = '$module'";
+            $sqlId = "SELECT shoes.id, shoes.name , shoes.price, category.name AS category FROM shoes inner JOIN category  ON shoes.categories  = category.id where shoes.id ='$module'";
             $resultId = $this->pdo->query($sqlId);
             $searchIdd = $resultId->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($searchIdd[0]);
