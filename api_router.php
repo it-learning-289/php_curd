@@ -33,7 +33,7 @@ class ApiRouter
                     // dd($key);
                     $author = new Author($key);
                     list($path, $class_function)  = explode("@", $value["path"]);
-                    dd(explode("@", $value["path"]));
+                    // dd(explode("@", $value["path"]));
                     list($class, $nameFunction) = explode("/", $class_function);
                     if (!$author->checkPermission($decoded_username)) {
                         echo json_encode(array("message" => "not allow"));
