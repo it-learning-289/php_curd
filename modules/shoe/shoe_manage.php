@@ -30,7 +30,7 @@ class ShoesManager
             $start = ($page - 1) * $limit;
 
             // Query to fetch records for the current page
-            $stmt = $this->pdo->prepare("SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes INNER JOIN category   ON shoes.categories=category.id LIMIT :start, :limit");
+            $stmt = $this->pdo->prepare("SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes LEFT JOIN category   ON shoes.categories=category.id LIMIT :start, :limit");
             $stmt->bindParam(':start', $start, PDO::PARAM_INT);
             $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
             $stmt->execute();
