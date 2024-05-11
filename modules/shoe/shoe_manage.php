@@ -73,15 +73,29 @@ class ShoesManager
                 $data = json_decode(file_get_contents("php://input"), true);
                 $name = $data['name'];
                 $price = $data['price'];
-                $categories = $data['category'];
+                $category_name = $data['category'];
+                // dd($categories);
 
+                //get category.id
+                $sqlId = "SELECT category.id FROM category WHERE category.name = '$category_name'";
+                $queryCategoryId = $this->pdo->query($sqlId);
+                // dd($queryCategoryId);
+                $category_id = $queryCategoryId->fetchAll(PDO::FETCH_ASSOC);
+                // dd($category_id[0]);
+
+                $category_id =$category_id[0]["id"];
+                // dd($category_id); 
                 // Prepare the SQL statement
-                $stmt = $this->pdo->prepare("INSERT INTO shoes (name, price, categories) VALUES (:name, :price, :category)");
-
+                // $stmt = $this->pdo->prepare("INSERT INTO category (id, name) VALUES ($category_id, '$category_name')");
+                // dd($stmt);
+                $stmt = $this->pdo->prepare("INSERT INTO shoes  (name, price,categories) VALUES ('$name', $price, $category_id)");
+                // dd($stmt);
+                // dd($stmt);
                 // Bind parameters
-                $stmt->bindParam(':name', $name);
-                $stmt->bindParam(':price', $price);
-                $stmt->bindParam(':category', $categories);
+                // $stmt->bindParam(':name', $name);
+                // $stmt->bindParam(':price', $price);
+                // $stmt->bindParam(':category_name', $categories);
+                // $stmt->bindParam(':category_id', $category_id);
 
                 // Execute the statement
                 $stmt->execute();
