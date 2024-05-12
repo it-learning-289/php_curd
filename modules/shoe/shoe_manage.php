@@ -84,13 +84,11 @@ class ShoesManager
                 // dd($category_id[0]);
 
                 $category_id = $category_id[0]["id"];
-                // dd($category_id); 
-                // Prepare the SQL statement
-                // $stmt = $this->pdo->prepare("INSERT INTO category (id, name) VALUES ($category_id, '$category_name')");
-                // dd($stmt);
+
                 $stmt = $this->pdo->prepare("INSERT INTO shoes  (name, price,categories) VALUES ('$name', $price, $category_id)");
                 // dd($stmt);
-                // dd($stmt);
+
+
                 // Bind parameters
                 // $stmt->bindParam(':name', $name);
                 // $stmt->bindParam(':price', $price);
@@ -146,6 +144,7 @@ class ShoesManager
             }
         }
     }
+    
     public function editShoe()
     {
         try {
@@ -177,7 +176,7 @@ class ShoesManager
                 $stmt->bindParam(':price', $price);
                 $stmt->bindParam(':category_id', $category_id);
                 $stmt->bindParam(':category_name', $category_name);
-                
+
                 // dd($stmt);
                 // dd($category_id);
                 // Execute the statement
@@ -189,5 +188,9 @@ class ShoesManager
             http_response_code(500); // Internal Server Error
             echo json_encode(array("message" => "Database error: " . $e->getMessage()));
         }
+
+
+
+
     }
 }
