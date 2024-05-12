@@ -13,7 +13,7 @@ class ShoesManager
         //get detail
         $pathInfoArr1 = explode("/", $_SERVER["PATH_INFO"]);
         // dd((empty($_GET['page'])));
-        if ($pathInfoArr1[2] = 'shoes' && empty($_GET['page'])&& is_numeric($pathInfoArr1[3])) { //is fixing is_numeric, show incorrect data
+        if ($pathInfoArr1[2] = 'shoes' && empty($_GET['page']) && is_numeric($pathInfoArr1[3])) { //is fixing is_numeric, show incorrect data
             $module = $pathInfoArr1[3];
             // var_dump($pathInfoArr1[3]);
             // var_dump($module);
@@ -83,7 +83,7 @@ class ShoesManager
                 $category_id = $queryCategoryId->fetchAll(PDO::FETCH_ASSOC);
                 // dd($category_id[0]);
 
-                $category_id =$category_id[0]["id"];
+                $category_id = $category_id[0]["id"];
                 // dd($category_id); 
                 // Prepare the SQL statement
                 // $stmt = $this->pdo->prepare("INSERT INTO category (id, name) VALUES ($category_id, '$category_name')");
@@ -144,6 +144,50 @@ class ShoesManager
                 http_response_code(500); // Internal Server Error
                 echo json_encode(array("message" => "Failed to delete record: " . $e->getMessage()));
             }
+        }
+    }
+    public function editShoe()
+    {
+        try {
+            //    dd("Patch cars");
+            $pathInfoArr1 = explode("/", $_SERVER["PATH_INFO"]);
+            $id = $pathInfoArr1[3];
+            // dd($id);
+            // dd($pathInfoArr1[3]);
+            $module = $pathInfoArr1[2];
+            if ($module = "shoes") {
+
+                $data = json_decode(file_get_contents("php://input"), true);
+                $name = $data['name'];
+                $price = $data['price'];
+                $category_name = $data['category'];
+
+                // get category.id
+                $sqlId = "SELECT category.id FROM category WHERE category.name = '$category_name'";
+                $queryCategoryId = $this->pdo->query($sqlId);
+                // dd($queryCategoryId);
+                $category_id = $queryCategoryId->fetchAll(PDO::FETCH_ASSOC);
+                // dd($category_id[0]);
+                $category_id = $category_id[0]["id"];
+
+                // Prepare the SQL statement
+                $stmt = $this->pdo->prepare("UPDATE shoes SET name = '$name' , price = $price , categories = $category_id WHERE  id= $id");
+                // Bind parameters
+                $stmt->bindParam(':name', $name);
+                $stmt->bindParam(':price', $price);
+                $stmt->bindParam(':category_id', $category_id);
+                $stmt->bindParam(':category_name', $category_name);
+                
+                // dd($stmt);
+                // dd($category_id);
+                // Execute the statement
+                $stmt->execute();
+                http_response_code(201); // Created
+                echo json_encode(array("message" => "edit successfully."));
+            }
+        } catch (Exception $e) {
+            http_response_code(500); // Internal Server Error
+            echo json_encode(array("message" => "Database error: " . $e->getMessage()));
         }
     }
 }

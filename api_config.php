@@ -16,6 +16,7 @@ function getApiConfig()
         "/cars/post" =>  ["path" =>  "./modules/car/car_manage.php@CarsManager/postCar"],
 
         "/shoes/{id}/delete" => ["path" => "./modules/shoe/shoe_manage.php@ShoesManager/delShoe"],
+        "/shoes/{id}/patch" => ["path" => "./modules/shoe/shoe_manage.php@ShoesManager/editShoe"],
         "/shoes/get" =>  ["path" => "./modules/shoe/shoe_manage.php@ShoesManager/getShoes"],
         "/shoes/post" =>  ["path" =>  "./modules/shoe/shoe_manage.php@ShoesManager/postShoe"],
 
