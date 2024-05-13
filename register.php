@@ -1,4 +1,7 @@
 <?php
+
+use Monolog\Logger;
+
 class UserRegistration
 {
     private $pdo;
@@ -38,13 +41,14 @@ class UserRegistration
             }
         } catch (Exception $e) {
             http_response_code(500); // Internal Server Error
+            $log = new CustomLogger('register', './logs/register.log', Logger::INFO);
+            $log->logError($e->getMessage());
             echo json_encode(array("message" => "Error: " . $e->getMessage()));
         }
     }
 }
 
-// Sử dụng class UserRegistration
-require_once "./connectMysql/Dev_Tien.php"; // Include file chứa kết nối PDO
-
+global $pdo;
+// dd($pdo);
 $userRegistration = new UserRegistration($pdo);
-// $userRegistration->registerUser();
+$userRegistration->registerUser();

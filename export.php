@@ -46,8 +46,8 @@ class CsvExporter {
 }
 
 // Sử dụng class CsvExporter
-require_once "./connectMysql/Dev_Tien.php"; // Include file chứa kết nối PDO
+// require_once "./connectMysql/Dev_Tien.php"; // Include file chứa kết nối PDO
 
 $csvExporter = new CsvExporter($pdo);
-// $csvExporter->export("shoes");
+$csvExporter->export("cars");
 ?>

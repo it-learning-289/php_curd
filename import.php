@@ -1,4 +1,5 @@
 <?php
+
 class CsvImporter
 {
     private $pdo;
@@ -52,10 +53,7 @@ class CsvImporter
         return "INSERT INTO $tableName ($columnNames) VALUES ($columnPlaceholders)";
     }
 }
-
-// Sử dụng class CsvImporter
-require_once "./Dev_Tien.php"; // Include file chứa kết nối PDO
-
+global $pdo;
 $csvImporter = new CsvImporter($pdo);
 $csvFile = "D:/My workspace/myProject/php_curd_API/uploads/" . basename($_FILES["file"]["name"]);
 $tableName = "cars";

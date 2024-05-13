@@ -4,6 +4,13 @@ FROM php:7.4
 # install mysql driver docker image
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git
+
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+
 # Set the working directory within the container
 WORKDIR /var/www/html
 
@@ -14,4 +21,4 @@ COPY . /var/www/html
 EXPOSE 80
 
 # Specify the command to run the PHP application
-CMD ["php", "-S", "0.0.0.0:80"]
+CMD ["php", "-S", "0.0.0.0:80"]`
