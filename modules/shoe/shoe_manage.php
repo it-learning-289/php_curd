@@ -22,6 +22,27 @@ class ShoesManager
             $searchIdd = $resultId->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($searchIdd[0]);
         }
+
+          //FILTER   http://localhost:8000/api.php?action=filter&field=price&value=25&comparison=more
+       else if (isset($_GET['min_number']) && isset($_GET['max_number'])) {
+        // Get the min and max numbers from the parameters
+        $minNumber = $_GET['min_number'];
+        $maxNumber = $_GET['max_number'];
+        // dd($minNumber);
+        // SQL query to filter data with less than and greater than conditions
+        $sql = "SELECT * FROM shoes WHERE price < $maxNumber AND price> $minNumber";
+
+        // Execute query
+        $result = $this->pdo->query($sql);
+
+        // Check if there are results
+        if ($result) {
+            $response = $result->fetchAll(PDO::FETCH_ASSOC);
+            // Return data as JSON
+            echo json_encode($response);
+        }
+    } 
+
         //PAGINATION
         else if ($_GET['page'] != "") {
             $limit = 10; // Number of records per page
@@ -55,7 +76,9 @@ class ShoesManager
 
             // Output JSON response
             echo json_encode($response);
-        } else {
+        }
+
+         else {
             $stmt = $this->pdo->query('SELECT * FROM shoes');
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $json = json_encode($data, JSON_PRETTY_PRINT);
