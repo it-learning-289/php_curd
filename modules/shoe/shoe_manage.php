@@ -46,7 +46,7 @@ class ShoesManager
         $result->execute();
         $users = $result->fetchAll(PDO::FETCH_ASSOC);
 
-        $total_stmt = $this->pdo->query("SELECT COUNT(*)  from (SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes LEFT JOIN category   ON shoes.categories=category.id   WHERE price < $maxNumber AND price> $minNumber LIMIT $start, $limit) tmp");
+        $total_stmt = $this->pdo->query("SELECT COUNT(*)  from (SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes LEFT JOIN category   ON shoes.categories=category.id   WHERE price < $maxNumber AND price> $minNumber) tmp");
         $total_rows = $total_stmt->fetchColumn();
         $total_pages = ceil($total_rows / $limit);
         // dd($total_stmt);
