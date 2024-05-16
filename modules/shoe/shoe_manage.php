@@ -24,27 +24,54 @@ class ShoesManager
         }
 
           //FILTER   http://localhost:8000/api.php?action=filter&field=price&value=25&comparison=more
-       else if (isset($_GET['min_number']) && isset($_GET['max_number'])) {
+       else if (isset($_GET['min_number']) && isset($_GET['max_number']) && isset($_GET['page'])) {
         // Get the min and max numbers from the parameters
         $minNumber = $_GET['min_number'];
         $maxNumber = $_GET['max_number'];
+        $limit = 10; // Number of records per page
+        // Get page numfber from the request, default to page 1
+        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+        // dd($page);
+        $start = ($page - 1) * $limit;
         // dd($minNumber);
         // SQL query to filter data with less than and greater than conditions
-        $sql = "SELECT * FROM shoes WHERE price < $maxNumber AND price> $minNumber";
+        // $sql = "SELECT * FROM shoes WHERE price < $maxNumber AND price> $minNumber";
+        $sql = "SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes LEFT JOIN category   ON shoes.categories=category.id   WHERE price < $maxNumber AND price> $minNumber LIMIT $start, $limit";
+
 
         // Execute query
         $result = $this->pdo->query($sql);
+        // $result->bindParam(':start', $start, PDO::PARAM_INT);
+        // $result->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $result->execute();
+        $users = $result->fetchAll(PDO::FETCH_ASSOC);
 
-        // Check if there are results
-        if ($result) {
-            $response = $result->fetchAll(PDO::FETCH_ASSOC);
-            // Return data as JSON
-            echo json_encode($response);
-        }
+        $total_stmt = $this->pdo->query("SELECT COUNT(*)  from (SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes LEFT JOIN category   ON shoes.categories=category.id   WHERE price < $maxNumber AND price> $minNumber LIMIT $start, $limit) tmp");
+        $total_rows = $total_stmt->fetchColumn();
+        $total_pages = ceil($total_rows / $limit);
+        // dd($total_stmt);
+        // Construct the API response
+        $response = [
+            'page' => $page,
+            'total_pages' => $total_pages,
+            'total_records' => $total_rows,
+            'users' => $users
+        ];
+
+        // Set headers to JSON
+
+        // Output JSON response
+        echo json_encode($response);
+        // // Check if there are results
+        // if ($result) {
+        //     $response = $result->fetchAll(PDO::FETCH_ASSOC);
+        //     // Return data as JSON
+        //     echo json_encode($response);
+        // }
     } 
 
         //PAGINATION
-        else if ($_GET['page'] != "") {
+        else if ($_GET['page'] != "" && !isset($_GET['min_number'])) {
             $limit = 10; // Number of records per page
             // Get page numfber from the request, default to page 1
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
