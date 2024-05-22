@@ -6,9 +6,9 @@ class CsvExporter {
         $this->pdo = $pdo;
     }
 
-    public function export($nameTable) {
+    public function export() {
         // get data from MySQL
-        $stmt = $this->pdo->prepare("SELECT * FROM $nameTable");
+        $stmt = $this->pdo->prepare("SELECT shoes.id, shoes.name ,shoes.price , category.name AS categories FROM shoes LEFT JOIN category ON shoes.categories=category.id;");
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -49,5 +49,5 @@ class CsvExporter {
 // require_once "./connectMysql/Dev_Tien.php"; // Include file chứa kết nối PDO
 
 $csvExporter = new CsvExporter($pdo);
-$csvExporter->export("cars");
+$csvExporter->export();
 ?>

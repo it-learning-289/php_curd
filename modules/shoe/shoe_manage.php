@@ -105,13 +105,26 @@ class ShoesManager
             echo json_encode($response);
         }
 
-         else {
-            $stmt = $this->pdo->query('SELECT * FROM shoes');
-            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $json = json_encode($data, JSON_PRETTY_PRINT);
-            echo $json;
+        //search name shoe
+        else if (isset($_GET['name'])) {
+            $searchName = $_GET["name"];
+            // dd($searchName);
+            $sqlName = "SELECT shoes.id, shoes.name, shoes.price , category.name AS category FROM shoes LEFT JOIN category  ON shoes.categories = category.id WHERE shoes.name LIKE '%$searchName%'";
+            $resultName = $this->pdo->query($sqlName);
+            // dd($resultName);
+            $resultNames = $resultName->fetchAll(PDO::FETCH_ASSOC);    
+            if ($resultNames) {
+                echo json_encode($resultNames);
+            }
+            echo json_encode(array("message"=>"invalid"));
+
+            }
+
+            
         }
-    }
+
+        
+    
     public function postShoe()
     {
         try {
